@@ -3,9 +3,13 @@
   "version": "0.1.0",
   "description": "Pomodoro Thing",
   "main": "index.js",
+  "engine": {
+    "node": "12.16.3",
+    "npm": "6.14.4"
+  },
   "scripts": {
-    "start": "node index.js",
-    "backend": "nodemon index.js"
+    "start": "node server/index.js",
+    "backend": "nodemon server/index.js"
   },
   "author": "Vadim Egorov",
   "license": "ISC",

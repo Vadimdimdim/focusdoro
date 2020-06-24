@@ -79,6 +79,8 @@ app.get("/api/user/logout", auth, (req, res) => {
     });
 });
 
-app.listen("5000", function(){
-    console.log("Server is working on port 5000");
+const port = process.env.PORT || 5000
+
+app.listen(port, function(){
+    console.log("Server is runnig on port " +  port);
 });
