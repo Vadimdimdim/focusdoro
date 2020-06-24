@@ -21,7 +21,7 @@ app.use(cookieParser());
 
 
 app.get("/", function(req, res){
-    console.log("Heroku");
+    res.send("Heroku");
 });
 
 app.get("/api/user/auth", auth, (req, res) => {
