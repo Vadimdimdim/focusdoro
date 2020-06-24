@@ -20,6 +20,10 @@ app.use(cookieParser());
 
 
 
+app.get("/", function(req, res){
+    console.log("Heroku");
+});
+
 app.get("/api/user/auth", auth, (req, res) => {
     res.status(200).json({
         _id: req._id,
