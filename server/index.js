@@ -24,7 +24,7 @@ app.get("/", function(req, res){
     res.send("Heroku");
 });
 
-app.get("/api/user/auth", auth, (req, res) => {
+app.get("/api/users/auth", auth, (req, res) => {
     res.status(200).json({
         _id: req._id,
         isAuth: true,
@@ -46,7 +46,7 @@ app.post("/api/users/register", (req, res) => {
     });
 });
 
-app.post("/api/user/login", (req, res) => {
+app.post("/api/users/login", (req, res) => {
     //find the email
     User.findOne({email: req.body.email}, (err, user) => {
         if(!user)
