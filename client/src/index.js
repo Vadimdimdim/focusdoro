@@ -5,7 +5,7 @@ import App from './components/App';
 import * as serviceWorker from './serviceWorker';
 import {BrowserRouter} from "react-router-dom";
 
-import "materialize-css/dist/css/materialize.min.css";
+// import "materialize-css/dist/css/materialize.min.css";
 
 import {Provider} from "react-redux";
 import {createStore, applyMiddleware} from "redux";
@@ -13,6 +13,10 @@ import promiseMiddleware from "redux-promise";
 import ReduxThunk from "redux-thunk"; 
 
 import Reducer from "./reducers"
+
+import 'react-app-polyfill/ie9';
+import 'react-app-polyfill/ie11';
+import 'core-js';
 
 const createStoreWithMiddleware = applyMiddleware(promiseMiddleware, ReduxThunk)(createStore);
 
