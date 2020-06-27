@@ -22,7 +22,9 @@ function LoginPage(props) {
     setRememberMe(!rememberMe)
   };
 
-  const initialEmail = localStorage.getItem("rememberMe") ? localStorage.getItem("rememberMe") : '';
+  console.log(localStorage.getItem("rememberMe"))
+
+  const initialEmail = undefined ? localStorage.getItem("rememberMe") : '';
 
   return (
     <Formik
@@ -35,8 +37,8 @@ function LoginPage(props) {
           .email('Email is invalid')
           .required('Email is required'),
         password: Yup.string()
-          .min(6, 'Password must be at least 6 characters')
-          .required('Password is required'),
+        .min(8, 'Password must have at least 8 characters')
+        .required('Password is required'),
       })}
       onSubmit={(values, { setSubmitting }) => {
         setTimeout(() => {
@@ -91,7 +93,7 @@ function LoginPage(props) {
                 <Input
                   id="email"
                   prefix={ <UserOutlined style={{ color: 'rgba(0,0,0,.25)' }}/>}
-                  placeholder="Enter your email"
+                  placeholder="Enter your Email"
                   type="email"
                   value={values.email}
                   onChange={handleChange}
@@ -109,7 +111,7 @@ function LoginPage(props) {
                 <Input
                   id="password"
                   prefix={<LockOutlined style={{ color: 'rgba(0,0,0,.25)' }} />}
-                  placeholder="Enter your password"
+                  placeholder="Enter your Password"
                   type="password"
                   value={values.password}
                   onChange={handleChange}
