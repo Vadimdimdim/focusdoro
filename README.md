@@ -7,3 +7,5 @@ copy and paste:
 module.exports = {
     mongoURI: "insert your mongoDB URL from mongoDB Cluster"
 }
+
+To run app: npm run dev
