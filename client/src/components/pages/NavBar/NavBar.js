@@ -19,7 +19,7 @@ function NavBar() {
   return (
     <nav className="menu" style={{ position: 'fixed', zIndex: 5, width: '100%' }}>
       <div className="menu__logo">
-        <a href="/">Focusdoro</a>
+        <a href="/" className="logo__name">Focusdoro</a>
       </div>
       <div className="menu__container">
         <div className="menu_left">

@@ -1,3 +1,11 @@
+.changeColor{
+    color:white;
+}
+
+.ant-form-item-label label{
+    color:white !important;
+}
+
 .input-feedback{
     padding-top: 10px;
 }

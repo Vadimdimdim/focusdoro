@@ -103,10 +103,10 @@ function RegisterPage(props) {
         } = props;
         return (
           <div className="app">
-            <h2>Sign Up</h2>
+            <h2 className="changeColor">Sign Up</h2>
             <Form style={{ minWidth: '375px' }} {...formItemLayout} onSubmit={handleSubmit} >
 
-              <Form.Item required label="First Name">
+              <Form.Item style={{ color: 'white' }} required label="First Name">
                 <Input
                   id="name"
                   placeholder="Enter your First Name"
@@ -191,7 +191,7 @@ function RegisterPage(props) {
                 )}
               </Form.Item>
 
-              <div>
+              <div className="changeColor">
                 <p>In order to <strong>protect your account</strong>, make sure your password:</p>
                 <ul>
                   <li>Is longer than 8 characters</li>

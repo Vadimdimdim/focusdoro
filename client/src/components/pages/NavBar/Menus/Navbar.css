@@ -2,10 +2,10 @@
 
 .menu {
   padding: 0 20px;
-  border-bottom: solid 1px #e8e8e8;
+  border-bottom: solid 1px #1c1c8a;
   overflow: auto;
-  box-shadow: 0 0 30px #f3f1f1;
-  background-color: white;
+  box-shadow: 0 0 30px #2c2c8f;
+  background-color: #19194f
 }
 
 .menu__logo {
@@ -60,6 +60,23 @@
 /* align header of Drawer with header of page */
 .menu_drawer .ant-drawer-header {
   padding: 14px 24px !important;
+}
+
+.logo__name{
+  color: white;
+}
+
+.logo__name:hover{
+  text-decoration: none;
+}
+
+.ant-menu-horizontal > .ant-menu-item a{
+  color:white;
+  background-color: #19194f;
+}
+
+.menu__container .ant-menu-horizontal{
+  background-color: #19194f;
 }
 
 @media (max-width: 767px) {

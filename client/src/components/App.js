@@ -9,6 +9,9 @@ import LoginPage from "./pages/LoginPage/LoginPage.js";
 import RegisterPage from "./pages/RegisterPage/RegisterPage.js";
 import NavBar from "./pages/NavBar/NavBar";
 import Footer from "./pages/Footer/Footer"
+import "./App.css"
+
+import 'bootstrap/dist/css/bootstrap.min.css';
 
 //null   Anyone Can go inside
 //true   only logged in user can go inside
