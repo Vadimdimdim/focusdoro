@@ -1,9 +1,8 @@
 import React, { Component } from 'react'
-import { FaCode, FaCcAmazonPay } from "react-icons/fa";
-import { findDOMNode } from "react-dom";
-import $ from "jquery";
 
 import Pomodoro from "./pomodoro"
+import Task from "./taskList"
+
 import "./HomePage.css";
 
 class HomePage extends Component {
@@ -12,11 +11,11 @@ class HomePage extends Component {
         this.state = {
             startMinutes: 25,
             startSeconds: 0,
-            brakeMinutes: 5,
-            brakeSeconds: 0
+            breakMinutes: 5,
+            breakSeconds: 0
         }
     }
-    
+    brake
     render() {
         return (
             <>
@@ -24,8 +23,11 @@ class HomePage extends Component {
                     <Pomodoro 
                         startMinutes = {this.state.startMinutes}
                         startSeconds = {this.state.startSeconds}
-                        brakeMinutes = {this.state.brakeMinutes}
-                        brakeSeconds = {this.state.brakeSeconds}
+                        breakMinutes = {this.state.breakMinutes}
+                        breakSeconds = {this.state.breakSeconds}
+                    />
+                    <Task 
+                        
                     />
                 </div>
             </>

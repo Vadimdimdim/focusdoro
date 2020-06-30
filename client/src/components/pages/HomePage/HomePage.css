@@ -1,12 +1,5 @@
-.timer{
-    display: inline;
-}
-
 .container{
     text-align: center;
-    margin-top: 30px;
-}
-
-.dots .minutes .seconds {
-    display: inline;
+    margin-top: 20px;
+    color: white
 }

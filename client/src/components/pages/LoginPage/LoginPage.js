@@ -137,7 +137,7 @@ function LoginPage(props) {
                 <div>
                   <Button type="primary" htmlType="submit" className="login-form-button" style={{ minWidth: '100%', marginTop: '4px' }} disabled={isSubmitting} onSubmit={handleSubmit}>
                     Log in
-                </Button>
+                  </Button>
                 </div>
                 <span style={{color: "white"}}>Or</span> <a href="/register">register now!</a>
               </Form.Item>
