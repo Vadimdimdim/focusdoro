@@ -1,11 +1,10 @@
-const express = require("express");
-const app = express();
-const mongoose = require("mongoose");
-const bodyParser = require("body-parser");
-const cookieParser = require('cookie-parser');
-const cors = require('cors');
-
-const config = require("./config/key");
+const express = require("express"),
+      app = express(),
+      mongoose = require("mongoose"),
+      bodyParser = require("body-parser"),
+      cookieParser = require('cookie-parser'),
+      cors = require('cors'),
+      config = require("./config/key");
 
 const connect = mongoose.connect(config.mongoURI,
     {

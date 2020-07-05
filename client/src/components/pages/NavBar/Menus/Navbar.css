@@ -3,13 +3,12 @@
 .menu {
   padding: 0 20px;
   border-bottom: solid 1px #1c1c8a;
-  overflow: auto;
   box-shadow: 0 0 30px #2c2c8f;
   background-color: #19194f
 }
 
 .menu__logo {
-  width: 150px;
+  width: 170px;
   float: left;
 }
 

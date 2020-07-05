@@ -1,9 +1,8 @@
 import React, { Component } from 'react'
-
-import "./taskList.css"
+import "./taskList.css";
 
 import { FaPlus } from "react-icons/fa";
-import { FaMinus } from "react-icons/fa"
+import { FaMinus } from "react-icons/fa";
 
 class Task extends Component {
     constructor(props) {
@@ -12,7 +11,7 @@ class Task extends Component {
             value: "",
             taskArr: []
         }
-        
+
         this.handleChange = this.handleChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
     }
@@ -22,40 +21,44 @@ class Task extends Component {
     }
 
     handleSubmit(event) {
-        this.state.taskArr.push(this.state.value);
-        this.setState({
-            taskArr:this.state.taskArr,
-            value:""
-        });
+        if (this.state.value !== "") {
+            this.state.taskArr.push(this.state.value);
+            this.setState({
+                taskArr: this.state.taskArr,
+                value: ""
+            });
+        } else {
+            console.log("error")
+        }
+
         event.preventDefault();
     }
 
     onDelete(index) {
         var array = [...this.state.taskArr]; // make a separate copy of the array
         array.splice(index, 1);
-        this.setState({taskArr: array});
+        this.setState({ taskArr: array });
     }
 
     render() {
         const { taskArr } = this.state
         return (
             <div className="task-container">
-                <h1>TASK LIST</h1>
-                <form onSubmit={this.handleSubmit} className="input-group mb-3" >
-                    <input type="text" className="form-control" value={this.state.value} onChange={this.handleChange} placeholder="New Task" />
-                    <div className="input-group-append">
-                        <button className="btn btn-outline-secondary" type="submit"><FaPlus/></button>
+                <h1 style={{color: 'white', marginBottom: '20px'}}>TASK LIST</h1>
+                <form onSubmit={this.handleSubmit} className="input-group mb-3">
+                    <div className="input-group-prepend">
+                        <button className="btn btn-outline-light" type="submit" style={{ paddingTop: '0' }}><FaPlus /></button>
                     </div>
+                    <input type="text" className="form-control" value={this.state.value} onChange={this.handleChange} placeholder="New Task" />
                 </form>
-                <div id="list" className="entry-container">
+
+                <div>
                     {taskArr.map((taskText, index) =>
-                        <div className="entry" key={"task" + index}>
-                            <div className="minus" onClick={() => this.onDelete(index)}>
-                                <div className="minus-logo">
-                                    <FaMinus aria-hidden="true" />
-                                </div>
+                        <div key={"task" + index}>
+                            <div onClick={() => this.onDelete(index)}>
+                                <FaMinus/>
                             </div>
-                            <div className="text">
+                            <div>
                                 {taskText}
                             </div>
                         </div>

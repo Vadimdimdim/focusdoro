@@ -1,7 +1,6 @@
-import React, { Component } from 'react'
-
-import Pomodoro from "./pomodoro"
-import Task from "./taskList"
+import React, {Component} from 'react';
+import Pomodoro from "./pomodoro";
+import Task from "./taskList";
 
 import "./HomePage.css";
 
@@ -10,25 +9,20 @@ class HomePage extends Component {
         super(props);
         this.state = {
             startMinutes: 25,
-            startSeconds: 0,
             breakMinutes: 5,
-            breakSeconds: 0
+            longBreakMinutes: 15
         }
     }
-    brake
     render() {
         return (
             <>
                 <div className="container">
                     <Pomodoro 
                         startMinutes = {this.state.startMinutes}
-                        startSeconds = {this.state.startSeconds}
                         breakMinutes = {this.state.breakMinutes}
-                        breakSeconds = {this.state.breakSeconds}
+                        longBreakMinutes = {this.state.longBreakMinutes}
                     />
-                    <Task 
-                        
-                    />
+                    <Task/>
                 </div>
             </>
         )

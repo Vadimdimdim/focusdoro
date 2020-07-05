@@ -1,6 +1,5 @@
-import React from 'react'
-import { SmileOutlined } from '@ant-design/icons';
-import "./Footer.css"
+import React from 'react';
+import "./Footer.css";
 
 function Footer() {
     return (
@@ -11,8 +10,6 @@ function Footer() {
                 <p>All logos and marks contained herein are the property of their respective owners.</p>
             </div>
         </div>
-        
-        
     )
 }
 

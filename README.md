@@ -1,11 +1,18 @@
 # focusdoro
+Install server and client dependencies
 
-npm install in "/" directory and "/client" directory
+`npm install`
 
-create dev.js in "/server/config/"
-copy and paste:
-module.exports = {
+Create dev.js
+
+`touch server/config/dev.js`
+
+Copy this in dev.js
+
+`module.exports = {
     mongoURI: "insert your mongoDB URL from mongoDB Cluster"
-}
+}`
 
-To run app: npm run dev
+To start the server and client at the same time (from the root of the project)
+
+`npm run dev`

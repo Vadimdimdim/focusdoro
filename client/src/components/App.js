@@ -9,7 +9,7 @@ import LoginPage from "./pages/LoginPage/LoginPage.js";
 import RegisterPage from "./pages/RegisterPage/RegisterPage.js";
 import NavBar from "./pages/NavBar/NavBar";
 import Footer from "./pages/Footer/Footer"
-import "./App.css"
+import "./App.css";
 
 import 'bootstrap/dist/css/bootstrap.min.css';
 

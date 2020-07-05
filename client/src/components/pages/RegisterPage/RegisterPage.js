@@ -1,9 +1,9 @@
 import React from "react";
 import moment from "moment";
-import { Formik } from 'formik';
+import {Formik} from 'formik';
 import * as Yup from 'yup';
-import { registerUser } from "../../../actions/user_actions";
-import { useDispatch } from "react-redux";
+import {registerUser} from "../../../actions/user_actions";
+import {useDispatch} from "react-redux";
 import "./RegisterPage.css"
 
 import {

@@ -1,13 +1,12 @@
-import React, { useState } from "react";
-import { withRouter } from "react-router-dom";
-import { loginUser } from "../../../actions/user_actions";
-import { Formik } from 'formik';
+import React, {useState} from "react";
+import {withRouter} from "react-router-dom";
+import {loginUser} from "../../../actions/user_actions";
+import {Formik} from 'formik';
 import * as Yup from 'yup';
-import { Form, Input, Button, Checkbox, Typography } from 'antd';
-import { useDispatch } from "react-redux";
+import {Form, Input, Button, Checkbox, Typography} from 'antd';
+import {useDispatch} from "react-redux";
 import {UserOutlined} from '@ant-design/icons';
 import {LockOutlined} from '@ant-design/icons';
-
 
 const { Title } = Typography;
 
@@ -21,8 +20,6 @@ function LoginPage(props) {
   const handleRememberMe = () => {
     setRememberMe(!rememberMe)
   };
-
-  console.log(localStorage.getItem("rememberMe"))
 
   const initialEmail = undefined ? localStorage.getItem("rememberMe") : '';
 

@@ -6,54 +6,7 @@ input{
     padding: 13px 13px 13px 25px;
     box-sizing: border-box;
     -moz-box-sizing: border-box;
-    color: #4568DC;
     border: 3px solid rgba(0, 0, 0, 0);
-}
-
-.entry{
-    background: white;
-	color: #666;
-    margin: 0;
-	padding: 0;
-	height: auto;
-    min-height: 40px;
-    max-width: 440px;
-	box-sizing: border-box;
-	display: flex;
-	width: 100%;
-}
-
-.minus{
-    background: #e74c3c;
-	color: white;
-	text-align: center;
-    min-width: 0px;
-    min-height: 40px;
-    opacity: 0;
-    transition: 0.2s linear;
-    float:right;
-}
-
-.text{
-    margin: auto 0;
-	height: 100%;
-	padding: 5px 50px 5px 15px;
-	word-wrap: break-word;
-	cursor: default;
-	max-width: 100%;
-	box-sizing: border-box;
-}
-
-.entry-container{
-    width: 100%;
-    display: flex;
-    align-items: center;
-    flex-direction: column;
-}
-
-.entry:hover .minus{
-    min-width: 40px;
-	opacity: 1;
 }
 
 .task-container{
@@ -63,28 +16,6 @@ input{
     flex-direction: column;
 }
 
-.input-group > .input-group-append > .btn{
-    border-radius: 0px;
-    border-radius: 0px;
-    color:white;
-    border-color: white;
-}
-
-input:focus{
-    background: white;
-    border: 3px solid #4568DC;
-    outline: none;
-}
-
-.form-control:not(:last-child){
-    border-radius: 0px;
-    border-radius: 0px;
-}
-
-.minus-logo{
-    padding-top: 5px;
-}
-
 .input-group{
-    max-width: 440px;
+    max-width: 600px !important;
 }

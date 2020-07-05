@@ -1,9 +1,11 @@
-import React, { useState } from 'react';
+import React, {useState} from 'react';
 import LeftMenu from './Menus/LeftMenu';
 import RightMenu from './Menus/RightMenu';
-import { Drawer, Button} from 'antd';
+import {Drawer, Button} from 'antd';
 import './Menus/Navbar.css';
-import { AlignRightOutlined } from '@ant-design/icons';
+import {AlignRightOutlined} from '@ant-design/icons';
+
+import { FaStopwatch } from "react-icons/fa";
 
 function NavBar() {
   const [visible, setVisible] = useState(false)
@@ -19,7 +21,7 @@ function NavBar() {
   return (
     <nav className="menu" style={{ position: 'fixed', zIndex: 5, width: '100%' }}>
       <div className="menu__logo">
-        <a href="/" className="logo__name">Focusdoro</a>
+        <a href="/" className="logo__name">Focusdoro <FaStopwatch/></a>
       </div>
       <div className="menu__container">
         <div className="menu_left">
