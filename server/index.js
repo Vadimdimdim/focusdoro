@@ -6,7 +6,9 @@ const express = require("express"),
       cors = require('cors'),
       config = require("./config/key");
 
-const connect = mongoose.connect('mongodb+srv://VadimEgorov:angel1972@cluster0-9xth0.mongodb.net/<dbname>?retryWrites=true&w=majority',
+const PORT = process.env.PORT || 5000
+
+mongoose.connect('mongodb+srv://VadimEgorov:angel1972@cluster0-9xth0.mongodb.net/<dbname>?retryWrites=true&w=majority',
     {
         useNewUrlParser: true, useUnifiedTopology: true,
         useCreateIndex: true, useFindAndModify: false
@@ -31,8 +33,7 @@ if (process.env.NODE_ENV === "production") {
     });
   }
 
-const port = process.env.PORT || 5000
 
-app.listen(port, function(){
-    console.log("Server is runnig on port " +  port);
+app.listen(PORT, function(){
+    console.log(`Server is runnig on port ${PORT}`);
 });
