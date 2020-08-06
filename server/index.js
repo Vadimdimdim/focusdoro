@@ -21,6 +21,8 @@ app.use(bodyParser.json());
 app.use(cookieParser());
 
 app.use('/api/users', require('./routes/users'));
+app.use('/api/pomodoro', require('./routes/pomodoro'));
+app.use('/api/tasks', require('./routes/tasks'));
 
 app.use('/uploads', express.static('uploads'));
 

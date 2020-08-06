@@ -1,0 +1,47 @@
+.ant-divider-horizontal.ant-divider-with-text::before, .ant-divider-horizontal.ant-divider-with-text::after{
+    border-top: 1px solid #6969f5 !important;
+}
+
+.ant-divider-inner-text{
+    font-size: 1rem;
+    color: #5b5bf5
+}
+
+.ant-input-group-addon:last-child {
+    padding-bottom: 4px !important;
+}
+
+.head{
+    align-self: stretch;
+    word-break: break-word;
+    text-align: left;
+    padding-right: 0.5rem
+}
+
+.body{
+    align-self: stretch;
+    word-break: break-word;
+    text-align: left;
+    padding-left: 0.5rem;
+}
+
+.tail{
+    align-self: stretch;
+    text-align: left;
+    padding-left: 0.5rem;
+}
+
+.task-container{
+    display: flex;
+    padding: .2rem 0;
+    position: relative;
+    min-height: 23px;
+    align-items: center;
+    border-top: 1px solid #6969f5;
+    border-color: #6969f5;
+    transition: all .5s;
+}
+
+.task-container:hover{
+    cursor: pointer;
+}

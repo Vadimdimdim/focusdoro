@@ -1,16 +1,12 @@
 import React from "react";
 import moment from "moment";
-import {Formik} from 'formik';
 import * as Yup from 'yup';
-import {registerUser} from "../../../actions/user_actions";
-import {useDispatch} from "react-redux";
-import "./RegisterPage.css"
+import { registerUser } from "../../../actions/user_actions";
+import { useDispatch } from "react-redux";
+import axios from 'axios'
 
-import {
-  Form,
-  Input,
-  Button,
-} from 'antd';
+import { Form, Input, Button } from 'antd';
+import { Formik } from 'formik';
 
 const formItemLayout = {
   labelCol: {
@@ -38,27 +34,23 @@ const tailFormItemLayout = {
 function RegisterPage(props) {
   const dispatch = useDispatch();
   return (
-
     <Formik
       initialValues={{
         email: '',
-        lastname: '',
-        name: '',
+        username: '',
         password: '',
         confirmPassword: ''
       }}
       validationSchema={Yup.object().shape({
-        name: Yup.string()
-          .required('First Name is required'),
-        lastname: Yup.string()
-          .required('Last Name is required'),
+        username: Yup.string()
+          .required('Username is required'),
         email: Yup.string()
           .email('Email is invalid')
           .required('Email is required'),
         password: Yup.string()
           .min(8, 'Password must have at least 8 characters')
-          .matches(/^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])/, 
-          'Invalid, read instructions below')
+          .matches(/^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])/,
+            'Invalid, read instructions below')
           .required('Password is required'),
         confirmPassword: Yup.string()
           .oneOf([Yup.ref('password'), null], 'Passwords must match')
@@ -66,19 +58,62 @@ function RegisterPage(props) {
       })}
       onSubmit={(values, { setSubmitting }) => {
         setTimeout(() => {
-
           let dataToSubmit = {
             email: values.email,
             password: values.password,
-            name: values.name,
-            lastname: values.lastname,
-            image: `http://gravatar.com/avatar/${moment().unix()}?d=identicon`
+            username: values.username,
+            profilePicture: `http://gravatar.com/avatar/${moment().unix()}?d=identicon`
           };
 
           dispatch(registerUser(dataToSubmit)).then(response => {
-            console.log(response);
-            console.log(dataToSubmit);
+            // console.log(response);
+            // console.log(dataToSubmit);
             if (response.payload.success) {
+              const variables = {
+                username: values.username
+              }
+
+              axios.post('/api/pomodoro/getDataByUsername', variables)
+                .then(response => {
+                  if (response.data.success) {
+                    // console.log(response.data.user)
+                    const settings = {
+                      user: response.data.user._id,
+                      duration: 25,
+                      shortBreak: 5,
+                      longBreak: 15,
+                      longBreakDelay: 4,
+                      pomodoroCounter: 1,
+                      autoStartPomodoro: true,
+                      autoStartBreak: true
+                    }
+
+                    const tasks = {
+                      user: response.data.user._id,
+                      tasks: [],
+                      categories: []
+                    }
+
+                    axios.post('/api/pomodoro/saveSettings', settings)
+                      .then(response => {
+                        if (response.data.success) {
+                          // alert('Settings were saved')
+                        } else {
+                          alert('Failed to save settings')
+                        }
+                      })
+                    axios.post('/api/tasks/saveTasks', tasks)
+                      .then(response => {
+                        if (response.data.success) {
+                          // alert('Settings were saved')
+                        } else {
+                          alert('Failed to save settings')
+                        }
+                      })
+                  } else {
+                    alert('Failed to get data by username')
+                  }
+                })
               props.history.push("/login");
             } else {
               alert(response.payload.err.errmsg)
@@ -94,49 +129,30 @@ function RegisterPage(props) {
           values,
           touched,
           errors,
-          dirty,
           isSubmitting,
           handleChange,
           handleBlur,
           handleSubmit,
-          handleReset,
         } = props;
         return (
           <div className="app">
             <h2 className="changeColor">Sign Up</h2>
-            <Form style={{ minWidth: '375px' }} {...formItemLayout} onSubmit={handleSubmit} >
+            <Form style={{ minWidth: '200px' }} {...formItemLayout} onSubmit={handleSubmit} >
 
-              <Form.Item style={{ color: 'white' }} required label="First Name">
+              <Form.Item style={{ color: 'white' }} required label="Username">
                 <Input
-                  id="name"
-                  placeholder="Enter your First Name"
+                  id="username"
+                  placeholder="Enter your Username"
                   type="text"
-                  value={values.name}
+                  value={values.username}
                   onChange={handleChange}
                   onBlur={handleBlur}
                   className={
-                    errors.name && touched.name ? 'text-input error' : 'text-input'
+                    errors.username && touched.username ? 'text-input error' : 'text-input'
                   }
                 />
-                {errors.name && touched.name && (
-                  <div className="input-feedback">{errors.name}</div>
-                )}
-              </Form.Item>
-
-              <Form.Item required label="Last Name">
-                <Input
-                  id="lastname"
-                  placeholder="Enter your Last Name"
-                  type="text"
-                  value={values.lastname}
-                  onChange={handleChange}
-                  onBlur={handleBlur}
-                  className={
-                    errors.lastname && touched.lastname ? 'text-input error' : 'text-input'
-                  }
-                />
-                {errors.lastname && touched.lastname && (
-                  <div className="input-feedback">{errors.lastname}</div>
+                {errors.username && touched.username && (
+                  <div className="input-feedback">{errors.username}</div>
                 )}
               </Form.Item>
 

@@ -1,11 +1,11 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
 import React from 'react';
-import {Menu} from 'antd';
 import axios from 'axios';
-import {USER_SERVER} from '../../../Config';
-import {withRouter} from 'react-router-dom';
-import {useSelector} from "react-redux";
-import "./RightMenu.css";
+import { USER_SERVER } from '../../../Config';
+import { withRouter } from 'react-router-dom';
+import { useSelector } from "react-redux";
+
+import { Menu } from 'antd';
 
 function RightMenu(props) {
   const user = useSelector(state => state.user)
@@ -34,6 +34,9 @@ function RightMenu(props) {
   } else {
     return (
       <Menu mode={props.mode}>
+        <Menu.Item key="profile">
+          <a href="/profile">Your Profile</a>
+        </Menu.Item>
         <Menu.Item key="logout">
           <a onClick={logoutHandler}>Logout</a>
         </Menu.Item>

@@ -1,0 +1,34 @@
+.timer-container{
+    border: 4px solid #6969f5;
+    box-shadow: 0 0 30px #6969f5; 
+    border-radius: 0.60rem; 
+    padding: 3rem 0; 
+    max-width: 500px; 
+    position: relative; 
+    margin: 3rem 0;
+}
+
+.settings-button{
+    position: absolute; 
+    top: 0; 
+    left: 0; 
+    text-align: left; 
+    margin: 0.6rem
+}
+
+.pomodoro-counter{
+    font-size: 1rem;
+    position: absolute;
+    top: 0; 
+    right: 0;
+    text-align: right;
+    margin: 1rem 
+}
+
+.pomodoro-container{
+    margin: 4rem 1rem
+}
+
+.timer{
+    margin-top: 2rem
+}

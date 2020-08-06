@@ -1,15 +1,14 @@
-import React, {Suspense} from 'react';
+import React, { Suspense } from 'react';
 import {
   Switch,
   Route
 } from "react-router-dom";
 import Auth from "../hoc/auth";
-import HomePage from "./pages/HomePage/HomePage.js";
-import LoginPage from "./pages/LoginPage/LoginPage.js";
-import RegisterPage from "./pages/RegisterPage/RegisterPage.js";
-import NavBar from "./pages/NavBar/NavBar";
-import Footer from "./pages/Footer/Footer"
-import "./App.css";
+import HomePage from "./views/HomePage/HomePage.js";
+import LoginPage from "./views/LoginPage/LoginPage.js";
+import RegisterPage from "./views/RegisterPage/RegisterPage.js";
+import NavBar from "./views/NavBar/NavBar";
+import Footer from "./views/Footer/Footer";
 
 import 'bootstrap/dist/css/bootstrap.min.css';
 

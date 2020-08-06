@@ -1,12 +1,13 @@
-import React, {useState} from "react";
-import {withRouter} from "react-router-dom";
-import {loginUser} from "../../../actions/user_actions";
-import {Formik} from 'formik';
+import React, { useState } from "react";
+import { withRouter } from "react-router-dom";
+import { loginUser } from "../../../actions/user_actions";
 import * as Yup from 'yup';
-import {Form, Input, Button, Checkbox, Typography} from 'antd';
-import {useDispatch} from "react-redux";
-import {UserOutlined} from '@ant-design/icons';
-import {LockOutlined} from '@ant-design/icons';
+import { useDispatch } from "react-redux";
+
+import { Form, Input, Button, Checkbox, Typography } from 'antd';
+import { Formik } from 'formik';
+import { UserOutlined } from '@ant-design/icons';
+import { LockOutlined } from '@ant-design/icons';
 
 const { Title } = Typography;
 
@@ -34,8 +35,8 @@ function LoginPage(props) {
           .email('Email is invalid')
           .required('Email is required'),
         password: Yup.string()
-        .min(8, 'Password must have at least 8 characters')
-        .required('Password is required'),
+          .min(8, 'Password must have at least 8 characters')
+          .required('Password is required'),
       })}
       onSubmit={(values, { setSubmitting }) => {
         setTimeout(() => {
@@ -73,23 +74,21 @@ function LoginPage(props) {
           values,
           touched,
           errors,
-          dirty,
           isSubmitting,
           handleChange,
           handleBlur,
-          handleSubmit,
-          handleReset,
+          handleSubmit
         } = props;
         return (
           <div className="app">
 
-            <Title level={2} style={{color: "white"}}>Log In</Title>
-            <form onSubmit={handleSubmit} style={{ width: '350px' }}>
+            <Title level={2}> Log In</Title>
+            <form onSubmit={handleSubmit} style={{ minWidth: '200px' }}>
 
               <Form.Item required>
                 <Input
                   id="email"
-                  prefix={ <UserOutlined style={{ color: 'rgba(0,0,0,.25)' }}/>}
+                  prefix={<UserOutlined style={{ color: 'rgba(0,0,0,.25)' }} />}
                   placeholder="Enter your Email"
                   type="email"
                   value={values.email}
@@ -127,7 +126,7 @@ function LoginPage(props) {
               )}
 
               <Form.Item>
-                <Checkbox id="rememberMe" onChange={handleRememberMe} checked={rememberMe} style={{color: "white"}}>Remember me</Checkbox>
+                <Checkbox id="rememberMe" onChange={handleRememberMe} checked={rememberMe} style={{ color: "white" }}>Remember me</Checkbox>
                 <a className="login-form-forgot" href="/reset_user" style={{ float: 'right' }}>
                   forgot password
                   </a>
@@ -136,7 +135,7 @@ function LoginPage(props) {
                     Log in
                   </Button>
                 </div>
-                <span style={{color: "white"}}>Or</span> <a href="/register">register now!</a>
+                <span style={{ color: "white" }}>Or</span> <a href="/register">register now!</a>
               </Form.Item>
             </form>
           </div>

@@ -1,0 +1,33 @@
+label{
+    font-weight: 700;
+    width: 18em; 
+    padding-top: 1rem
+}
+
+span{
+    font-size: 11.2px
+}
+
+.modal-container{
+    border: 4px solid #6969f5;
+    box-shadow: 0 0 30px #6969f5; 
+    border-radius: 0.60rem; 
+    padding-bottom: 0px !important;
+    width: 508px !important
+}
+
+.setting-container{
+    display: flex;
+    flex-wrap: wrap; 
+    margin-bottom: 1.6rem; 
+    min-height: 3rem
+}
+
+.switch-input{
+    width: 200px;
+    margin-top: 1rem
+}
+
+.number-input{
+    width: 200px
+}

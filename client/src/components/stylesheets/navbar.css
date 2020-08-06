@@ -2,9 +2,9 @@
 
 .menu {
   padding: 0 20px;
-  border-bottom: solid 1px #1c1c8a;
-  box-shadow: 0 0 30px #2c2c8f;
-  background-color: #19194f
+  border-bottom: solid 1px #6969f5;
+  box-shadow: 0 0 36px #6969f5;
+  background-color: #6969f5
 }
 
 .menu__logo {
@@ -71,11 +71,11 @@
 
 .ant-menu-horizontal > .ant-menu-item a{
   color:white;
-  background-color: #19194f;
+  background-color: #6969f5;
 }
 
 .menu__container .ant-menu-horizontal{
-  background-color: #19194f;
+  background-color: #6969f5;
 }
 
 @media (max-width: 767px) {
@@ -100,4 +100,18 @@
   .menu__logo a {
     padding: 10px 20px;
   }
+}
+
+.ant-menu-horizontal > .ant-menu-item a:hover{
+  text-decoration: none;
+  color: #ffcffd;
+  border-color: #ffcffd;
+}
+
+.ant-menu-item-active{
+  border-color: #ffcffd !important;
+}
+
+.logo__name:hover{
+  color: #ffcffd;
 }
