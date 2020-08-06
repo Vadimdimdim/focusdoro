@@ -24,8 +24,6 @@ app.use('/api/users', require('./routes/users'));
 app.use('/api/pomodoro', require('./routes/pomodoro'));
 app.use('/api/tasks', require('./routes/tasks'));
 
-app.use('/uploads', express.static('uploads'));
-
 if (process.env.NODE_ENV === "production") {
     app.use(express.static("client/build"));
     app.get("*", (req, res) => {
