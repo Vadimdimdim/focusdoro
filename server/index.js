@@ -6,7 +6,7 @@ const express = require("express"),
       cors = require('cors'),
       config = require("./config/key");
 
-const connect = mongoose.connect(config.mongoURI,
+const connect = mongoose.connect('mongodb+srv://VadimEgorov:angel1972@cluster0-9xth0.mongodb.net/<dbname>?retryWrites=true&w=majority',
     {
         useNewUrlParser: true, useUnifiedTopology: true,
         useCreateIndex: true, useFindAndModify: false
