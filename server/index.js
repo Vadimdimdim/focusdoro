@@ -6,9 +6,9 @@ const express = require("express"),
       cors = require('cors'),
       config = require("./config/key");
 
-const PORT = process.env.PORT || 5000
+const PORT = process.env.PORT || 8080
 
-mongoose.connect('mongodb+srv://VadimEgorov:angel1972@cluster0-9xth0.mongodb.net/<dbname>?retryWrites=true&w=majority',
+mongoose.connect(config.mongoURI,
     {
         useNewUrlParser: true, useUnifiedTopology: true,
         useCreateIndex: true, useFindAndModify: false
