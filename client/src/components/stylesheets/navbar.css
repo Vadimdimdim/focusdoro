@@ -62,7 +62,7 @@
 }
 
 .logo__name{
-  color: white;
+  color: aliceblue;
 }
 
 .logo__name:hover{
@@ -70,7 +70,7 @@
 }
 
 .ant-menu-horizontal > .ant-menu-item a{
-  color:white;
+  color:aliceblue;
   background-color: #6969f5;
 }
 
@@ -104,8 +104,13 @@
 
 .ant-menu-horizontal > .ant-menu-item a:hover{
   text-decoration: none;
-  color: #ffcffd;
-  border-color: #ffcffd;
+  color: #ffcffd !important;
+  border-color: #ffcffd !important;
+}
+
+.ant-menu-item-selected{
+  color: #ffcffd !important;
+  border-color: #ffcffd !important;
 }
 
 .ant-menu-item-active{
@@ -114,4 +119,32 @@
 
 .logo__name:hover{
   color: #ffcffd;
+}
+
+.ant-drawer-wrapper-body{
+  background-color: #6969f5;
+}
+
+.ant-drawer-header{
+  background-color: #6969f5;
+}
+
+.ant-drawer-title{
+  color: aliceblue
+}
+
+.ant-menu{
+  background-color: #6969f5 !important;
+}
+
+.ant-menu-inline{
+  border-right-width: 0px !important
+}
+
+.ant-menu-item a{
+  color: aliceblue !important
+}
+
+.ant-menu-item a:hover{
+  color: #ffcffd
 }

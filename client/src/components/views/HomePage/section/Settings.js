@@ -49,11 +49,11 @@ function Settings(props) {
                 autoStartPomodoro: props.AutoPomodoro,
                 autoStartBreak: props.AutoBreak
             }
-            console.log(variable)
+            // console.log(variable)
             axios.put(`/api/pomodoro/updateSettings/${SettingsId}`, variable)
                 .then(response => {
                     if (response.data.success) {
-                        console.log('updated settings')
+                        // console.log('updated settings')
                     } else {
                         alert('Failed to get settings')
                     }

@@ -6,8 +6,7 @@ import { useDispatch } from "react-redux";
 
 import { Form, Input, Button, Checkbox, Typography } from 'antd';
 import { Formik } from 'formik';
-import { UserOutlined } from '@ant-design/icons';
-import { LockOutlined } from '@ant-design/icons';
+import { UserOutlined, LockOutlined  } from '@ant-design/icons';
 
 const { Title } = Typography;
 
@@ -80,9 +79,9 @@ function LoginPage(props) {
           handleSubmit
         } = props;
         return (
-          <div className="app">
+          <div className="login-container">
 
-            <Title level={2}> Log In</Title>
+            <Title level={2} id="title"> Log In</Title>
             <form onSubmit={handleSubmit} style={{ minWidth: '200px' }}>
 
               <Form.Item required>

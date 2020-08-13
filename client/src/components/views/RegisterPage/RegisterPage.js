@@ -5,8 +5,12 @@ import { registerUser } from "../../../actions/user_actions";
 import { useDispatch } from "react-redux";
 import axios from 'axios'
 
-import { Form, Input, Button } from 'antd';
+import { Form, Input, Button, Typography } from 'antd';
 import { Formik } from 'formik';
+
+import '../../stylesheets/register.css'
+
+const {Title} = Typography;
 
 const formItemLayout = {
   labelCol: {
@@ -43,12 +47,13 @@ function RegisterPage(props) {
       }}
       validationSchema={Yup.object().shape({
         username: Yup.string()
-          .required('Username is required'),
+          .required('Username is required')
+          .min(3, 'Your username is too short'),
         email: Yup.string()
           .email('Email is invalid')
           .required('Email is required'),
         password: Yup.string()
-          .min(8, 'Password must have at least 8 characters')
+          .min(8, 'Your password is too short')
           .matches(/^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])/,
             'Invalid, read instructions below')
           .required('Password is required'),
@@ -76,7 +81,7 @@ function RegisterPage(props) {
               axios.post('/api/pomodoro/getDataByUsername', variables)
                 .then(response => {
                   if (response.data.success) {
-                    // console.log(response.data.user)
+                    console.log(response.data.user)
                     const settings = {
                       user: response.data.user._id,
                       duration: 25,
@@ -117,6 +122,7 @@ function RegisterPage(props) {
               props.history.push("/login");
             } else {
               alert(response.payload.err.errmsg)
+              console.log(response.payload.err)
             }
           })
 
@@ -135,8 +141,8 @@ function RegisterPage(props) {
           handleSubmit,
         } = props;
         return (
-          <div className="app">
-            <h2 className="changeColor">Sign Up</h2>
+          <div className="container">
+            <Title level={2} id="title">Sign Up</Title>
             <Form style={{ minWidth: '200px' }} {...formItemLayout} onSubmit={handleSubmit} >
 
               <Form.Item style={{ color: 'white' }} required label="Username">
@@ -207,12 +213,12 @@ function RegisterPage(props) {
                 )}
               </Form.Item>
 
-              <div className="changeColor">
+              <div id="password-protect">
                 <p>In order to <strong>protect your account</strong>, make sure your password:</p>
                 <ul>
-                  <li>Is longer than 8 characters</li>
-                  <li>Contain at least one uppercase letter</li>
-                  <li>Contain at least one number</li>
+                  <li>Contains 8 or more characters</li>
+                  <li>Contains at least one uppercase letter</li>
+                  <li>Contains at least one number</li>
                   <li>Does not match or significantly contain your username</li>
                 </ul>
               </div>

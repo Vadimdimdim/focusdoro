@@ -26,6 +26,7 @@ function Pomodoro() {
     const [IsShortBreak, setIsShortBreak] = useState(false)
     const [IsLongBreak, setIsLongBreak] = useState(false)
     const [Counter, setCounter] = useState(1)
+    const [FinishedPomodoro, setFinishedPomodoro] = useState(false)
 
     const updateSettings = () => {
         let variable = { user: localStorage.getItem("userId") }
@@ -72,9 +73,11 @@ function Pomodoro() {
                     if (!IsBreak && IsPomodoro) {
                         // Pomodoro Counter
                         setCounter(Counter => Counter + 1)
+                        setFinishedPomodoro(!FinishedPomodoro)
                         StartBreak()
                     }
                     else {
+                        setFinishedPomodoro(!FinishedPomodoro)
                         CheckAutoPomodoro()
                     }
                 }
@@ -90,17 +93,17 @@ function Pomodoro() {
         setIsPomodoro(true)
         setIsBreak(false)
         setMinutes(Duration)
-        setSeconds(0)
+        setSeconds(3)
         // console.log('Start Pomodoro')
     }
 
     const CheckAutoPomodoro = () => {
         if (AutoPomodoro) {
-            console.log('Auto Pomodoro', AutoPomodoro)
+            // console.log('Auto Pomodoro', AutoPomodoro)
             setIsAutoStop(false)
             StartPomodoro()
         } else {
-            console.log('Auto Pomodoro', AutoPomodoro)
+            // console.log('Auto Pomodoro', AutoPomodoro)
             setIsAutoStop(true)
             setIsOn(false)
             setIsPomodoro(true)
@@ -112,11 +115,11 @@ function Pomodoro() {
 
     const StartBreak = () => {
         if (AutoBreak) {
-            console.log('Auto Break', AutoBreak)
+            // console.log('Auto Break', AutoBreak)
             setIsAutoStop(false)
             setIsOn(true)
         } else {
-            console.log('Auto Break', AutoBreak)
+            // console.log('Auto Break', AutoBreak)
             setIsAutoStop(true)
             setIsOn(false)
         }
@@ -159,6 +162,7 @@ function Pomodoro() {
         } else {
             setCounter(Counter => Counter + 1)
             // console.log('Skip Pomodoro')
+            setFinishedPomodoro(!FinishedPomodoro)
             CheckAutoPomodoro()
         }
     }
@@ -227,7 +231,7 @@ function Pomodoro() {
                         {!IsOn && !IsBreak && IsPomodoro ? <Button onClick={ResetPomodoro}>Reset</Button> : null}
                     </div>
                 </div>
-                <Tasks />
+                <Tasks FinishedPomodoro={FinishedPomodoro}/>
             </div>
         </div >
     )

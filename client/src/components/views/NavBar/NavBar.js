@@ -5,6 +5,7 @@ import RightMenu from './Menus/RightMenu';
 import { Drawer, Button } from 'antd';
 import { AlignRightOutlined } from '@ant-design/icons';
 import { FaStopwatch } from "react-icons/fa";
+
 import '../../stylesheets/navbar.css';
 
 function NavBar() {
@@ -21,7 +22,7 @@ function NavBar() {
   return (
     <nav className="menu" style={{ position: 'fixed', zIndex: 5, width: '100%' }}>
       <div className="menu__logo">
-        <a href="/" className="logo__name">Focusdoro <FaStopwatch /></a>
+        <a href="/" className="logo__name">Focusdoro <FaStopwatch/></a>
       </div>
       <div className="menu__container">
         <div className="menu_left">

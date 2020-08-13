@@ -1,0 +1,35 @@
+.container {
+    flex-direction: column;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 3rem;
+    padding-bottom: 3rem;
+}
+
+.login-container {
+    flex-direction: column;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 3rem;
+    padding-bottom: 16rem;
+}
+
+label{
+    color: aliceblue !important
+}
+
+#title{
+    color: aliceblue !important
+}
+
+#password-protect{
+    color: aliceblue
+}
+
+.input-feedback{
+    margin-top: 3px;
+}

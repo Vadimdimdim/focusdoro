@@ -31,3 +31,20 @@ span{
 .number-input{
     width: 200px
 }
+
+.ant-modal-header{
+    background-color: #313131 !important;
+}
+
+.ant-modal-content{
+    background-color: #313131 !important;
+    color: aliceblue !important
+}
+
+.ant-modal-title{
+    color: aliceblue !important
+}
+
+.ant-modal-close-x{
+    color: aliceblue !important
+}

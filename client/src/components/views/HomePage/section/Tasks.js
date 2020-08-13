@@ -7,11 +7,10 @@ import '../../../stylesheets/tasks.css'
 
 const { Option } = Select;
 
-function Tasks() {
+function Tasks(props) {
 
     const [Task, setTask] = useState("")
     const [Category, setCategory] = useState("")
-    const [Pomodoro, setPomodoro] = useState(1)
     const [EditTask, setEditTask] = useState("")
     const [EditCategory, setEditCategory] = useState("")
     const [Tasks, setTasks] = useState([])
@@ -57,22 +56,42 @@ function Tasks() {
         }
     }, [Tasks, Categories, TasksId, Pomodoros])
 
+    
+
+    useEffect(() => { 
+
+        if(props.FinishedPomodoro && Pomodoros[0] !== undefined){
+            if (Pomodoros[0] <= 1) {
+                DeleteTask(0)
+                console.log('delete')
+            } else {
+                HandleRemovePomodoros(0)
+                console.log('-1')
+            }
+        }
+    }, [props.FinishedPomodoro])
+
     const onAddTask = () => {
-        setTasks(Tasks => Tasks.concat(Task))
-        setCategories(Categories => Categories.concat(Category))
-        setPomodoros(Pomodoros => Pomodoros.concat(Pomodoro))
-        setTask('')
+        if (Task !== '') {
+            setTasks(Tasks => Tasks.concat(Task))
+            setCategories(Categories => Categories.concat(Category))
+            setPomodoros(Pomodoros => Pomodoros.concat(1))
+            setTask('')
+        }
         setCategory('')
     }
 
     const DeleteTask = (event) => {
         let tasks = [...Tasks];
         let categories = [...Categories];
+        let pomodoros = [...Pomodoros];
         if (event !== -1) {
             tasks.splice(event, 1)
             categories.splice(event, 1)
+            pomodoros.splice(event, 1)
             setTasks(tasks)
             setCategories(categories)
+            setPomodoros(pomodoros)
         }
         setTask('')
         setCategory('')
@@ -83,8 +102,10 @@ function Tasks() {
         let categories = [...Categories]
         tasks[event] = EditTask
         categories[event] = EditCategory
-        setTasks(tasks)
-        setCategories(categories)
+        if (tasks[event] !== '') {
+            setTasks(tasks)
+            setCategories(categories)
+        }
         setEdit(false)
         setTask('')
         setCategory('')
@@ -109,7 +130,6 @@ function Tasks() {
     }
 
     const HandleCategoryEdit = (event) => {
-        console.log(event)
         setEditCategory(event)
     }
 
@@ -117,19 +137,16 @@ function Tasks() {
         let pomodoros = [...Pomodoros]
         pomodoros[event] += 1
         setPomodoros(pomodoros)
-        console.log('Pomodoros', pomodoros[event])
     }
 
     const HandleRemovePomodoros = (event) => {
         let pomodoros = [...Pomodoros]
         pomodoros[event] -= 1
 
-        if (pomodoros[event] === 0) {
+        if (pomodoros[event] <= 0) {
             DeleteTask(event)
-            console.log('delete task')
         } else {
             setPomodoros(pomodoros)
-            console.log('Pomodoros', pomodoros[event])
         }
     }
 
@@ -154,7 +171,7 @@ function Tasks() {
                     trigger="click"
                 >
                     <div id='task-pomodoros'>
-                        <p style={{textAlign: 'center' }}>
+                        <p style={{ textAlign: 'center' }}>
                             {Pomodoros[index]}
                         </p>
                     </div>
