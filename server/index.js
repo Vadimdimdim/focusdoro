@@ -6,7 +6,7 @@ const express = require("express"),
       cors = require('cors'),
       config = require("./config/key");
 
-const PORT = process.env.PORT || 8080
+
 
 mongoose.connect(config.mongoURI,
     {
@@ -33,6 +33,7 @@ if (process.env.NODE_ENV === "production") {
     });
   }
 
+const PORT = process.env.PORT || 5000
 
 app.listen(PORT, function(){
     console.log(`Server is runnig on port ${PORT}`);

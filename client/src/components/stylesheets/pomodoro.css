@@ -22,13 +22,15 @@
     top: 0; 
     right: 0;
     text-align: right;
-    margin: 1rem 
+    margin: 1rem;
 }
 
 .pomodoro-container{
-    margin: 4rem 1rem
+    margin: 4rem 1rem;
+    color: aliceblue
 }
 
 .timer{
-    margin-top: 2rem
+    margin-top: 2rem;
+    
 }

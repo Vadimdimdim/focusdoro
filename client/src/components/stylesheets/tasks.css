@@ -45,3 +45,13 @@
 .task-container:hover{
     cursor: pointer;
 }
+
+#task-pomodoros{
+    border: 1px solid white;
+    border-radius: 100%;
+    width: 32px; 
+    height: 32px;
+    display: inline-block;
+    padding-top: 2px;
+    margin-right: 6px
+}

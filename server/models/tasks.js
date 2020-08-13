@@ -6,7 +6,8 @@ const tasksSchema = mongoose.Schema({
         ref: 'user'
     },
     tasks: [{}],
-    categories: [{}]
+    categories: [{}],
+    pomodoros: [{}]
 });
 
 const Tasks = mongoose.model("tasks", tasksSchema);

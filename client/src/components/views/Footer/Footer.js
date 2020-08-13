@@ -2,7 +2,7 @@ import React from 'react';
 
 function Footer() {
     return (
-        <div style={{textAlign: 'center', fontSize: '0.5rem'}}>
+        <div style={{textAlign: 'center', fontSize: '0.5rem', color: 'aliceblue'}}>
             <div>
                 Focusdoro is not related to the Pomodoro Technique™/Pomodoro™’s trademark holder Cirillo Company and respects its trademarks.
                 <br/>

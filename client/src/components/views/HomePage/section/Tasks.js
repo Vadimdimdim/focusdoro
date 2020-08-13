@@ -1,21 +1,22 @@
 import React, { useState, useEffect } from 'react'
 import axios from 'axios'
 
-import { Form, Input, Select, Divider, Row, Col, Popover } from 'antd'
-import { PlusOutlined, EditFilled, MoreOutlined, DeleteFilled, CheckOutlined } from '@ant-design/icons'
+import { Form, Input, Select, Divider, Row, Col, Popover, Button } from 'antd'
+import { PlusOutlined, MinusOutlined, EditFilled, MoreOutlined, DeleteFilled, CheckOutlined } from '@ant-design/icons'
 import '../../../stylesheets/tasks.css'
 
-const { Search } = Input
 const { Option } = Select;
 
 function Tasks() {
 
     const [Task, setTask] = useState("")
     const [Category, setCategory] = useState("")
+    const [Pomodoro, setPomodoro] = useState(1)
     const [EditTask, setEditTask] = useState("")
     const [EditCategory, setEditCategory] = useState("")
     const [Tasks, setTasks] = useState([])
     const [Categories, setCategories] = useState([])
+    const [Pomodoros, setPomodoros] = useState([])
     const [Edit, setEdit] = useState(false)
     const [EditByIndex, setEditByIndex] = useState(null)
 
@@ -31,6 +32,7 @@ function Tasks() {
                     setTaskssId(response.data.tasks._id)
                     setTasks(response.data.tasks.tasks)
                     setCategories(response.data.tasks.categories)
+                    setPomodoros(response.data.tasks.pomodoros)
                 } else {
                     // alert('Failed to get Tasks')
                 }
@@ -38,32 +40,32 @@ function Tasks() {
     }, [])
 
     useEffect(() => {
-        if(TasksId !== ""){
+        if (TasksId !== "") {
             let variable = {
                 tasks: Tasks,
-                categories: Categories
+                categories: Categories,
+                pomodoros: Pomodoros
             }
-            axios.put(`/api/tasks//updateTasks/${TasksId}`, variable)
-            .then(response => {
-                if (response.data.success) {
-                    // console.log('updated tasks')
-                } else {
-                    // alert('Failed to get tasks')
-                }
-            })
+            axios.put(`/api/tasks/updateTasks/${TasksId}`, variable)
+                .then(response => {
+                    if (response.data.success) {
+                        // console.log('updated tasks')
+                    } else {
+                        // alert('Failed to get tasks')
+                    }
+                })
         }
-    }, [Tasks, Categories])
+    }, [Tasks, Categories, TasksId, Pomodoros])
 
     const onAddTask = () => {
         setTasks(Tasks => Tasks.concat(Task))
         setCategories(Categories => Categories.concat(Category))
+        setPomodoros(Pomodoros => Pomodoros.concat(Pomodoro))
         setTask('')
         setCategory('')
-        // UpdateData()
     }
 
     const DeleteTask = (event) => {
-        // console.log(event)
         let tasks = [...Tasks];
         let categories = [...Categories];
         if (event !== -1) {
@@ -74,11 +76,9 @@ function Tasks() {
         }
         setTask('')
         setCategory('')
-        // UpdateData()
     }
 
     const onEditTask = (event) => {
-        console.log(event)
         let tasks = [...Tasks];
         let categories = [...Categories]
         tasks[event] = EditTask
@@ -88,11 +88,9 @@ function Tasks() {
         setEdit(false)
         setTask('')
         setCategory('')
-        // UpdateData()
     }
 
     const HandleEdit = (event) => {
-        console.log('edit task number',event)
         setEdit(true)
         setEditByIndex(event)
         setEditTask(EditTask => EditTask = Tasks[event])
@@ -115,6 +113,100 @@ function Tasks() {
         setEditCategory(event)
     }
 
+    const HandleAddPomodoros = (event) => {
+        let pomodoros = [...Pomodoros]
+        pomodoros[event] += 1
+        setPomodoros(pomodoros)
+        console.log('Pomodoros', pomodoros[event])
+    }
+
+    const HandleRemovePomodoros = (event) => {
+        let pomodoros = [...Pomodoros]
+        pomodoros[event] -= 1
+
+        if (pomodoros[event] === 0) {
+            DeleteTask(event)
+            console.log('delete task')
+        } else {
+            setPomodoros(pomodoros)
+            console.log('Pomodoros', pomodoros[event])
+        }
+    }
+
+    const renderTask = (task, index) =>
+        <Row className='task-container' justify="space-around" key={index}>
+            <Col className='head' xs={4} sm={4} md={4} lg={4}>
+                {Categories[index]}
+            </Col>
+            <Col className='body' xs={16} sm={16} md={16} lg={16}>
+                {task}
+            </Col>
+            <Col className='tail' xs={4} sm={4} md={4} lg={4} style={{ textAlign: 'right' }}>
+                <Popover
+                    placement="right"
+                    content={
+                        <div>
+                            <PlusOutlined style={{ fontSize: '1.5rem', marginBottom: '7px' }} onClick={() => HandleAddPomodoros(index)} />
+                            <br />
+                            <MinusOutlined style={{ fontSize: '1.5rem' }} onClick={() => HandleRemovePomodoros(index)} />
+                        </div>
+                    }
+                    trigger="click"
+                >
+                    <div id='task-pomodoros'>
+                        <p style={{textAlign: 'center' }}>
+                            {Pomodoros[index]}
+                        </p>
+                    </div>
+                </Popover>
+
+                <Popover
+                    placement="right"
+                    content={
+                        <div>
+                            <DeleteFilled style={{ fontSize: '1.5rem', marginBottom: '7px' }} onClick={() => DeleteTask(index)} />
+                            <br />
+                            <EditFilled style={{ fontSize: '1.5rem' }} onClick={() => HandleEdit(index)} />
+                        </div>
+                    }
+                    trigger="click"
+                >
+                    <MoreOutlined style={{ fontSize: '2rem' }} rotate={90} />
+                </Popover>
+            </Col>
+        </Row>
+
+    const renderEditTaks = (index) =>
+        <Form.Item style={{ height: '33px' }} key={index}>
+            <Form.Item
+                style={{ display: 'inline-block', width: '16%' }}
+            >
+                <Select
+                    type='text'
+                    name='category'
+                    placeholder="Category"
+                    onChange={HandleCategoryEdit}
+                    style={{ maxWidth: '100px' }}
+                >
+                    <Option value='Work'>Work</Option>
+                    <Option value='Study'>Study</Option>
+                    <Option value='Personal'>Personal</Option>
+                </Select>
+            </Form.Item>
+            <Form.Item
+                style={{ display: 'inline-block', width: '84%' }}
+            >
+                <Input
+                    type='text'
+                    name='task'
+                    value={EditTask}
+                    placeholder='input search text'
+                    onChange={HandleTaskEdit}
+                    addonAfter={<CheckOutlined onClick={() => onEditTask(index)} style={{ fontSize: '1rem' }} />}
+                />
+            </Form.Item>
+        </Form.Item>
+
     return (
         <div style={{ maxWidth: '600px' }}>
             <Divider>TODO</Divider>
@@ -132,6 +224,7 @@ function Tasks() {
                     >
                         <Option value='Work'>Work</Option>
                         <Option value='Study'>Study</Option>
+                        <Option value='Project'>Project</Option>
                         <Option value='Personal'>Personal</Option>
                     </Select>
                 </Form.Item>
@@ -142,7 +235,7 @@ function Tasks() {
                         type='text'
                         name='task'
                         value={Task}
-                        placeholder='input search text'
+                        placeholder='Add short description'
                         onChange={HandleTaskChange}
                         addonAfter={<PlusOutlined onClick={onAddTask} style={{ fontSize: '1rem' }} />}
                     />
@@ -150,60 +243,10 @@ function Tasks() {
             </Form.Item>
             <div>
                 {Tasks.map((task, index) =>
-                    Edit && EditByIndex == index ?
-                        <Form.Item style={{ height: '33px' }} key={index}>
-                            <Form.Item
-                                style={{ display: 'inline-block', width: '16%' }}
-                            >
-                                <Select
-                                    type='text'
-                                    name='category'
-                                    placeholder="Category"
-                                    onChange={HandleCategoryEdit}
-                                    style={{ maxWidth: '100px' }}
-                                >
-                                    <Option value='Work'>Work</Option>
-                                    <Option value='Study'>Study</Option>
-                                    <Option value='Personal'>Personal</Option>
-                                </Select>
-                            </Form.Item>
-                            <Form.Item
-                                style={{ display: 'inline-block', width: '84%' }}
-                            >
-                                <Input
-                                    type='text'
-                                    name='task'
-                                    value={EditTask}
-                                    placeholder='input search text'
-                                    onChange={HandleTaskEdit}
-                                    addonAfter={<CheckOutlined  onClick={() => onEditTask(index)} style={{ fontSize: '1rem' }} />}
-                                />
-                            </Form.Item>
-                        </Form.Item>
+                    Edit && EditByIndex === index ?
+                        renderEditTaks(index)
                         :
-                        <Row className='task-container' justify="space-around" key={index}>
-                            <Col className='head' xs={4} sm={4} md={4} lg={4}>
-                                {Categories[index]}
-                            </Col>
-                            <Col className='body' xs={16} sm={18} md={18} lg={18}>
-                                {task}
-                            </Col>
-                            <Col className='tail' xs={4} sm={2} md={2} lg={2}>
-                                <Popover
-                                    placement="right"
-                                    content={
-                                        <div>
-                                            <p><DeleteFilled style={{ fontSize: '1.5rem' }} onClick={() => DeleteTask(index)} /></p>
-                                            <p style={{ marginBottom: '0px' }}><EditFilled style={{ fontSize: '1.5rem' }} onClick={() => HandleEdit(index)} /></p>
-
-                                        </div>
-                                    }
-                                    trigger="click"
-                                >
-                                    <MoreOutlined style={{ fontSize: '2rem' }} rotate={90} />
-                                </Popover>
-                            </Col>
-                        </Row>
+                        renderTask(task, index)
                 )}
                 <div style={{ borderTop: '1px solid #6969f5' }}></div>
             </div>
