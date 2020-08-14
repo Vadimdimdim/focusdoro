@@ -32,6 +32,18 @@ const settingsSchema = mongoose.Schema({
     autoStartBreak: {
         type: Boolean,
         default: true
+    },
+    alarmVolume: {
+        type: Number,
+        default: 100
+    },
+    alarmPlay: {
+        type: Boolean,
+        default: true
+    },
+    alarmSound: {
+        type: String,
+        default: "softBells"
     }
 });
 

@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import UIfx from 'uifx';
 
 import { Button, Tooltip } from 'antd';
 import { ForwardFilled } from '@ant-design/icons'
@@ -8,17 +9,28 @@ import '../../stylesheets/pomodoro.css';
 import Settings from './Sections/Settings';
 import Tasks from './Sections/Tasks'
 
-import pomodoroSound from "../../sounds/state-change_confirm-up.wav";
+import demonstrative from "../../sounds/demonstrative.ogg";
+import eventually from "../../sounds/eventually.ogg";
+import goesWithoutSaying from "../../sounds/goes-without-saying.ogg";
+import gotItDone from "../../sounds/got-it-done.mp3";
+import juntos from "../../sounds/juntos.ogg";
+import longChimeSound from "../../sounds/long-chime-sound.ogg";
+import pieceOfCake from "../../sounds/piece-of-cake.ogg";
+import pristine from "../../sounds/pristine.ogg";
+import slowSpringBoard from "../../sounds/slow-spring-board.ogg";
+import softBells from "../../sounds/soft-bells.ogg";
 
 function Pomodoro() {
-    const sound = new Audio(pomodoroSound);
-
+    const [SettingsId, setSettingsId] = useState("")
     const [Duration, setDuration] = useState(25)
     const [ShortBreak, setShortBreak] = useState(5)
     const [LongBreak, setLongBreak] = useState(15)
     const [LongBreakDelay, setLongBreakDelay] = useState(4)
     const [AutoPomodoro, setAutoPomodoro] = useState(true)
     const [AutoBreak, setAutoBreak] = useState(true)
+    const [AlarmVolume, setAlarmVolume] = useState(100)
+    const [AlarmPlay, setAlarmPlay] = useState(true)
+    const [AlarmSound, setAlarmSound] = useState("softBells")
 
     const [Minutes, setMinutes] = useState(Duration)
     const [Seconds, setSeconds] = useState(0)
@@ -37,13 +49,16 @@ function Pomodoro() {
         axios.post('/api/pomodoro/getSettings', variable)
             .then(response => {
                 if (response.data.success) {
-                    // console.log(response.data.settings);
+                    setSettingsId(response.data.settings._id)
                     setDuration(response.data.settings.duration)
                     setShortBreak(response.data.settings.shortBreak)
                     setLongBreak(response.data.settings.longBreak)
                     setLongBreakDelay(response.data.settings.longBreakDelay)
                     setAutoPomodoro(response.data.settings.autoStartPomodoro)
                     setAutoBreak(response.data.settings.autoStartBreak)
+                    setAlarmVolume(response.data.settings.alarmVolume)
+                    setAlarmPlay(response.data.settings.alarmPlay)
+                    setAlarmSound(response.data.settings.alarmSound)
                     if (!IsOn && !IsShortBreak && !IsLongBreak) {
                         setMinutes(response.data.settings.duration)
                     }
@@ -51,7 +66,6 @@ function Pomodoro() {
                     if (!IsOn && !IsShortBreak && !IsLongBreak) {
                         setMinutes(Duration)
                     }
-                    // alert('Failed to get Settings from pomodoro 43')
                 }
             })
     }
@@ -76,12 +90,16 @@ function Pomodoro() {
                     if (!IsBreak && IsPomodoro) {
                         // Pomodoro Counter
                         setCounter(Counter => Counter + 1)
-                        playSound(sound)
+                        if(AlarmPlay){
+                            playSound(AlarmSound, AlarmVolume)
+                        }
                         setFinishedPomodoro(!FinishedPomodoro)
                         StartBreak()
                     }
                     else {
-                        playSound(sound)
+                        if(AlarmPlay){
+                            playSound(AlarmSound, AlarmVolume)
+                        }
                         setFinishedPomodoro(!FinishedPomodoro)
                         CheckAutoPomodoro()
                     }
@@ -99,17 +117,12 @@ function Pomodoro() {
         setIsBreak(false)
         setMinutes(Duration)
         setSeconds(0)
-        // console.log('Start Pomodoro')
     }
 
     const CheckAutoPomodoro = () => {
         if (AutoPomodoro) {
-            // console.log('Auto Pomodoro', AutoPomodoro)
-            setIsAutoStop(false)
             StartPomodoro()
         } else {
-            // console.log('Auto Pomodoro', AutoPomodoro)
-            setIsAutoStop(true)
             setIsOn(false)
             setIsPomodoro(true)
             setIsBreak(false)
@@ -120,11 +133,9 @@ function Pomodoro() {
 
     const StartBreak = () => {
         if (AutoBreak) {
-            // console.log('Auto Break', AutoBreak)
             setIsAutoStop(false)
             setIsOn(true)
         } else {
-            // console.log('Auto Break', AutoBreak)
             setIsAutoStop(true)
             setIsOn(false)
         }
@@ -137,13 +148,11 @@ function Pomodoro() {
             setSeconds(0)
             setIsShortBreak(false)
             setIsLongBreak(true)
-            // console.log('Start Long Break')
         } else {
             setMinutes(ShortBreak)
             setSeconds(0)
             setIsShortBreak(true)
             setIsLongBreak(false)
-            // console.log('Start Short Break')
         }
     }
 
@@ -156,93 +165,132 @@ function Pomodoro() {
     }
 
     const ResetPomodoro = () => {
-        // console.log('Reset pomodoro')
         StartPomodoro()
     }
 
     const SkipPomodoro = () => {
         if (!IsBreak) {
-            // console.log('Skip Break')
             StartBreak()
         } else {
             setCounter(Counter => Counter + 1)
-            // console.log('Skip Pomodoro')
             setFinishedPomodoro(!FinishedPomodoro)
             CheckAutoPomodoro()
         }
     }
 
-    const playSound = audioFile => {
-        audioFile.play();
+    const playSound = (sound, volume) => {
+        const sounds = {
+            softBells: new UIfx(softBells),
+            demonstrative: new UIfx(demonstrative),
+            eventually: new UIfx(eventually),
+            goesWithoutSaying: new UIfx(goesWithoutSaying),
+            gotItDone: new UIfx(gotItDone),
+            juntos: new UIfx(juntos),
+            longChimeSound: new UIfx(longChimeSound),
+            pieceOfCake: new UIfx(pieceOfCake),
+            pristine: new UIfx(pristine),
+            slowSpringBoard: new UIfx(slowSpringBoard)
+        }
+
+        switch (sound) {
+            case "softBells":
+                return sounds.softBells.setVolume(volume / 100).play()
+            case "demonstrative":
+                return sounds.demonstrative.setVolume(volume / 100).play()
+            case "eventually":
+                return sounds.eventually.setVolume(volume / 100).play()
+            case "goesWithoutSaying":
+                return sounds.goesWithoutSaying.setVolume(volume / 100).play()
+            case "gotItDone":
+                return sounds.gotItDone.setVolume(volume / 100).play()
+            case "juntos":
+                return sounds.juntos.setVolume(volume / 100).play()
+            case "longChimeSound":
+                return sounds.longChimeSound.setVolume(volume / 100).play()
+            case "pieceOfCake":
+                return sounds.pieceOfCake.setVolume(volume / 100).play()
+            case "pristine":
+                return sounds.pristine.setVolume(volume / 100).play()
+            case "slowSpringBoard":
+                return sounds.slowSpringBoard.setVolume(volume / 100).play()
+            default:
+                return sounds.softBells.setVolume(volume / 100).play()
+        }
     }
 
     return (
-        <div className='pomodoro-container'>
-            <div type='flex' align='middle'>
-                <div className='timer-container'>
-                    <Tooltip placement="top" title="Open Settings Menu">
-                        <div className='settings-button'>
-                            <Settings
-                                update={updateSettings}
-                                setDuration={setDuration}
-                                setShortBreak={setShortBreak}
-                                setLongBreak={setLongBreak}
-                                setLongBreakDelay={setLongBreakDelay}
-                                setAutoPomodoro={setAutoPomodoro}
-                                setAutoBreak={setAutoBreak}
-                                Duration={Duration}
-                                ShortBreak={ShortBreak}
-                                LongBreak={LongBreak}
-                                LongBreakDelay={LongBreakDelay}
-                                AutoPomodoro={AutoPomodoro}
-                                AutoBreak={AutoBreak}
-                            />
-                        </div>
-                    </Tooltip>
+        <div className='pomodoro-container' type='flex' align='middle'>
+            <div className='timer-container'>
+                <Tooltip placement="top" title="Open Settings Menu">
+                    <div className='settings-button'>
+                        <Settings
+                            update={updateSettings}
+                            playSound={playSound}
+                            setDuration={setDuration}
+                            setShortBreak={setShortBreak}
+                            setLongBreak={setLongBreak}
+                            setLongBreakDelay={setLongBreakDelay}
+                            setAutoPomodoro={setAutoPomodoro}
+                            setAutoBreak={setAutoBreak}
+                            setAlarmVolume={setAlarmVolume}
+                            setAlarmPlay={setAlarmPlay}
+                            setAlarmSound={setAlarmSound}
+                            SettingsId={SettingsId}
+                            Duration={Duration}
+                            ShortBreak={ShortBreak}
+                            LongBreak={LongBreak}
+                            LongBreakDelay={LongBreakDelay}
+                            AutoPomodoro={AutoPomodoro}
+                            AutoBreak={AutoBreak}
+                            AlarmVolume={AlarmVolume}
+                            AlarmPlay={AlarmPlay}
+                            AlarmSound={AlarmSound}
+                        />
+                    </div>
+                </Tooltip>
 
-                    <div className='pomodoro-counter'>
-                        {!IsBreak ?
-                            !IsBreak && IsOn ?
-                                <p>Pomodoro #{Counter}</p>
-                                :
-                                <p>Pomodoro #{Counter}
-                                    <Tooltip placement="top" title="Skip Pomodoro">
+                <div className='pomodoro-counter'>
+                    {!IsBreak ?
+                        !IsBreak && IsOn ?
+                            <p>Pomodoro #{Counter}</p>
+                            :
+                            <p>Pomodoro #{Counter}
+                                <Tooltip placement="top" title="Skip Pomodoro">
+                                    <ForwardFilled style={{ fontSize: '2rem', color: '#6969f5' }} onClick={SkipPomodoro} />
+                                </Tooltip>
+                            </p>
+                        :
+                        IsBreak && IsOn ?
+                            IsLongBreak ? <p>On Long Break</p> : <p>On Short Break</p>
+                            :
+                            IsLongBreak ?
+                                <p>On Long Break
+                                        <Tooltip placement="top" title="Skip Long Break">
                                         <ForwardFilled style={{ fontSize: '2rem', color: '#6969f5' }} onClick={SkipPomodoro} />
                                     </Tooltip>
                                 </p>
-                            :
-                            IsBreak && IsOn ?
-                                IsLongBreak ? <p>On Long Break</p> : <p>On Short Break</p>
                                 :
-                                IsLongBreak ?
-                                    <p>On Long Break
-                                        <Tooltip placement="top" title="Skip Long Break">
-                                            <ForwardFilled style={{ fontSize: '2rem', color: '#6969f5' }} onClick={SkipPomodoro} />
-                                        </Tooltip>
-                                    </p>
-                                    :
-                                    <p>On Short Break
+                                <p>On Short Break
                                         <Tooltip placement="top" title="Skip Short Break">
-                                            <ForwardFilled style={{ fontSize: '2rem', color: '#6969f5' }} onClick={SkipPomodoro} />
-                                        </Tooltip>
-                                    </p>
-                        }
-                    </div>
-                    <div style={{ marginTop: '2rem' }}>
-                        {Seconds > 9 ? <h1 className="timer-numbers">{Minutes}:{Seconds}</h1> : <h1 className="timer-numbers">{Minutes}:0{Seconds}</h1>}
-                    </div>
-                    <br />
-                    <div>
-                        {!IsOn && !IsBreak && !IsPomodoro ? <Button onClick={StartPomodoro}>Start</Button> : null}
-                        {IsOn ? <Button onClick={StopPomodoro}>Stop</Button> : null}
-                        {!IsOn && (IsBreak || IsPomodoro) && !IsAutoStop ? <Button onClick={ResumePomodoro}>Resume</Button> : null}
-                        {!IsOn && IsPomodoro && IsAutoStop ? <Button onClick={ResumePomodoro}>Start Pomodoro #{Counter}</Button> : null}
-                        {!IsOn && IsBreak && IsAutoStop ? <Button onClick={ResumePomodoro}>Start Break</Button> : null}
-                        {!IsOn && !IsBreak && IsPomodoro ? <Button style={{ marginLeft: '1rem' }} onClick={ResetPomodoro}>Reset</Button> : null}
-                    </div>
+                                        <ForwardFilled style={{ fontSize: '2rem', color: '#6969f5' }} onClick={SkipPomodoro} />
+                                    </Tooltip>
+                                </p>
+                    }
                 </div>
-                <Tasks FinishedPomodoro={FinishedPomodoro} />
+                <div style={{ marginTop: '2rem' }}>
+                    {Seconds > 9 ? <h1 className="timer-numbers">{Minutes}:{Seconds}</h1> : <h1 className="timer-numbers">{Minutes}:0{Seconds}</h1>}
+                </div>
+                <br />
+                <div>
+                    {!IsOn && !IsBreak && !IsPomodoro ? <Button onClick={StartPomodoro}>Start</Button> : null}
+                    {IsOn ? <Button onClick={StopPomodoro}>Stop</Button> : null}
+                    {!IsOn && (IsBreak || IsPomodoro) && !IsAutoStop ? <Button onClick={ResumePomodoro}>Resume</Button> : null}
+                    {!IsOn && IsPomodoro && IsAutoStop ? <Button onClick={ResumePomodoro}>Start Pomodoro #{Counter}</Button> : null}
+                    {!IsOn && IsBreak && IsAutoStop ? <Button onClick={ResumePomodoro}>Start Break</Button> : null}
+                    {!IsOn && !IsBreak && IsPomodoro ? <Button style={{ marginLeft: '1rem' }} onClick={ResetPomodoro}>Reset</Button> : null}
+                </div>
             </div>
+            <Tasks FinishedPomodoro={FinishedPomodoro} />
         </div >
     )
 }

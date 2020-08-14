@@ -48,3 +48,18 @@ span{
 .ant-modal-close-x{
     color: aliceblue !important
 }
+
+.change-settings{
+    width: 100%;
+    text-align: center; 
+    margin-bottom: 1rem
+}
+
+.settings-active{
+    border-bottom: 1px solid aliceblue;
+    font-size: 1.5rem
+}
+
+.settings-not-active{
+    font-size: 1.5rem
+}
