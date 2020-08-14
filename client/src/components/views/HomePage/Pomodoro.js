@@ -3,12 +3,15 @@ import axios from 'axios';
 
 import { Button, Tooltip } from 'antd';
 import { ForwardFilled } from '@ant-design/icons'
-import '../../../stylesheets/pomodoro.css';
+import '../../stylesheets/pomodoro.css';
 
-import Settings from './Settings';
-import Tasks from './Tasks'
+import Settings from './Sections/Settings';
+import Tasks from './Sections/Tasks'
+
+import pomodoroSound from "../../sounds/state-change_confirm-up.wav";
 
 function Pomodoro() {
+    const sound = new Audio(pomodoroSound);
 
     const [Duration, setDuration] = useState(25)
     const [ShortBreak, setShortBreak] = useState(5)
@@ -73,10 +76,12 @@ function Pomodoro() {
                     if (!IsBreak && IsPomodoro) {
                         // Pomodoro Counter
                         setCounter(Counter => Counter + 1)
+                        playSound(sound)
                         setFinishedPomodoro(!FinishedPomodoro)
                         StartBreak()
                     }
                     else {
+                        playSound(sound)
                         setFinishedPomodoro(!FinishedPomodoro)
                         CheckAutoPomodoro()
                     }
@@ -93,7 +98,7 @@ function Pomodoro() {
         setIsPomodoro(true)
         setIsBreak(false)
         setMinutes(Duration)
-        setSeconds(3)
+        setSeconds(0)
         // console.log('Start Pomodoro')
     }
 
@@ -167,13 +172,18 @@ function Pomodoro() {
         }
     }
 
+    const playSound = audioFile => {
+        audioFile.play();
+    }
+
     return (
         <div className='pomodoro-container'>
-            <div className='space-align-container' type='flex' align='middle'>
+            <div type='flex' align='middle'>
                 <div className='timer-container'>
                     <Tooltip placement="top" title="Open Settings Menu">
                         <div className='settings-button'>
-                            <Settings update={updateSettings}
+                            <Settings
+                                update={updateSettings}
                                 setDuration={setDuration}
                                 setShortBreak={setShortBreak}
                                 setLongBreak={setLongBreak}
@@ -200,16 +210,16 @@ function Pomodoro() {
                                         <ForwardFilled style={{ fontSize: '2rem', color: '#6969f5' }} onClick={SkipPomodoro} />
                                     </Tooltip>
                                 </p>
-
                             :
                             IsBreak && IsOn ?
                                 IsLongBreak ? <p>On Long Break</p> : <p>On Short Break</p>
                                 :
-                                IsLongBreak ? <p>On Long Break
+                                IsLongBreak ?
+                                    <p>On Long Break
                                         <Tooltip placement="top" title="Skip Long Break">
-                                        <ForwardFilled style={{ fontSize: '2rem', color: '#6969f5' }} onClick={SkipPomodoro} />
-                                    </Tooltip>
-                                </p>
+                                            <ForwardFilled style={{ fontSize: '2rem', color: '#6969f5' }} onClick={SkipPomodoro} />
+                                        </Tooltip>
+                                    </p>
                                     :
                                     <p>On Short Break
                                         <Tooltip placement="top" title="Skip Short Break">
@@ -218,8 +228,8 @@ function Pomodoro() {
                                     </p>
                         }
                     </div>
-                    <div className='timer'>
-                        {Seconds > 9 ? <h1 style={{ color: 'aliceblue' }}>{Minutes}:{Seconds}</h1> : <h1 style={{ color: 'aliceblue' }}>{Minutes}:0{Seconds}</h1>}
+                    <div style={{ marginTop: '2rem' }}>
+                        {Seconds > 9 ? <h1 className="timer-numbers">{Minutes}:{Seconds}</h1> : <h1 className="timer-numbers">{Minutes}:0{Seconds}</h1>}
                     </div>
                     <br />
                     <div>
@@ -228,10 +238,10 @@ function Pomodoro() {
                         {!IsOn && (IsBreak || IsPomodoro) && !IsAutoStop ? <Button onClick={ResumePomodoro}>Resume</Button> : null}
                         {!IsOn && IsPomodoro && IsAutoStop ? <Button onClick={ResumePomodoro}>Start Pomodoro #{Counter}</Button> : null}
                         {!IsOn && IsBreak && IsAutoStop ? <Button onClick={ResumePomodoro}>Start Break</Button> : null}
-                        {!IsOn && !IsBreak && IsPomodoro ? <Button onClick={ResetPomodoro}>Reset</Button> : null}
+                        {!IsOn && !IsBreak && IsPomodoro ? <Button style={{ marginLeft: '1rem' }} onClick={ResetPomodoro}>Reset</Button> : null}
                     </div>
                 </div>
-                <Tasks FinishedPomodoro={FinishedPomodoro}/>
+                <Tasks FinishedPomodoro={FinishedPomodoro} />
             </div>
         </div >
     )

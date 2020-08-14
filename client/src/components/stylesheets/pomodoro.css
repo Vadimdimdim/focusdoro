@@ -30,7 +30,7 @@
     color: aliceblue
 }
 
-.timer{
-    margin-top: 2rem;
-    
+.timer-numbers{
+    color: aliceblue;
+    font-size: 4rem;
 }

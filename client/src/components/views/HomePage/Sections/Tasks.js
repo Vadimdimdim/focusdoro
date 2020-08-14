@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import axios from 'axios'
 
-import { Form, Input, Select, Divider, Row, Col, Popover, Button } from 'antd'
+import { Form, Input, Select, Divider, Row, Col, Popover, Tooltip } from 'antd'
 import { PlusOutlined, MinusOutlined, EditFilled, MoreOutlined, DeleteFilled, CheckOutlined } from '@ant-design/icons'
 import '../../../stylesheets/tasks.css'
 
@@ -56,11 +56,11 @@ function Tasks(props) {
         }
     }, [Tasks, Categories, TasksId, Pomodoros])
 
-    
 
-    useEffect(() => { 
 
-        if(props.FinishedPomodoro && Pomodoros[0] !== undefined){
+    useEffect(() => {
+
+        if (props.FinishedPomodoro && Pomodoros[0] !== undefined) {
             if (Pomodoros[0] <= 1) {
                 DeleteTask(0)
                 console.log('delete')
@@ -163,9 +163,14 @@ function Tasks(props) {
                     placement="right"
                     content={
                         <div>
-                            <PlusOutlined style={{ fontSize: '1.5rem', marginBottom: '7px' }} onClick={() => HandleAddPomodoros(index)} />
+                            <Tooltip placement="right" title="Add Pomodoro">
+                                <PlusOutlined style={{ fontSize: '1.5rem', marginBottom: '7px' }} onClick={() => HandleAddPomodoros(index)} />
+                            </Tooltip>
                             <br />
-                            <MinusOutlined style={{ fontSize: '1.5rem' }} onClick={() => HandleRemovePomodoros(index)} />
+                            <Tooltip placement="right" title="Remove Pomodoro">
+                                <MinusOutlined style={{ fontSize: '1.5rem' }} onClick={() => HandleRemovePomodoros(index)} />
+                            </Tooltip>
+
                         </div>
                     }
                     trigger="click"
@@ -181,9 +186,14 @@ function Tasks(props) {
                     placement="right"
                     content={
                         <div>
-                            <DeleteFilled style={{ fontSize: '1.5rem', marginBottom: '7px' }} onClick={() => DeleteTask(index)} />
+                            <Tooltip placement="right" title="Delete Task">
+                                <DeleteFilled style={{ fontSize: '1.5rem', marginBottom: '7px' }} onClick={() => DeleteTask(index)} />
+                            </Tooltip>
                             <br />
-                            <EditFilled style={{ fontSize: '1.5rem' }} onClick={() => HandleEdit(index)} />
+                            <Tooltip placement="right" title="Edit Task">
+                                <EditFilled style={{ fontSize: '1.5rem' }} onClick={() => HandleEdit(index)} />
+                            </Tooltip>
+
                         </div>
                     }
                     trigger="click"
@@ -227,7 +237,6 @@ function Tasks(props) {
     return (
         <div style={{ maxWidth: '600px' }}>
             <Divider>TODO</Divider>
-
             <Form.Item style={{ height: '33px' }}>
                 <Form.Item
                     style={{ display: 'inline-block', width: '16%' }}

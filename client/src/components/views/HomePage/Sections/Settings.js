@@ -125,21 +125,21 @@ function Settings(props) {
                         <div className='setting-container'>
                             <label htmlFor='pomodoro-duration'>Pomodoro duration: </label>
                             <div className='number-input'>
-                                <InputNumber min={0} max={100} defaultValue={props.Duration} onChange={onChangeDuration} />
+                                <InputNumber min={1} max={100} defaultValue={props.Duration} onChange={onChangeDuration} />
                                 <span> in minutes</span>
                             </div>
                         </div>
                         <div className='setting-container'>
                             <label htmlFor='pomodoro-duration'>Short break duration: </label>
                             <div className='number-input'>
-                                <InputNumber min={0} max={100} defaultValue={props.ShortBreak} onChange={onChangeShortBreak} />
+                                <InputNumber min={1} max={100} defaultValue={props.ShortBreak} onChange={onChangeShortBreak} />
                                 <span> in minutes</span>
                             </div>
                         </div>
                         <div className='setting-container'>
                             <label htmlFor='pomodoro-duration'>Long break duration: </label>
                             <div className='number-input'>
-                                <InputNumber min={0} max={100} defaultValue={props.LongBreak} onChange={onChangeLongBreak} />
+                                <InputNumber min={1} max={100} defaultValue={props.LongBreak} onChange={onChangeLongBreak} />
                                 <span> in minutes</span>
                             </div>
                         </div>
