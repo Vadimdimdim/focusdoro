@@ -81,7 +81,7 @@ function RegisterPage(props) {
               axios.post('/api/pomodoro/getDataByUsername', variables)
                 .then(response => {
                   if (response.data.success) {
-                    console.log(response.data.user)
+                    // console.log(response.data.user)
                     const settings = {
                       user: response.data.user._id,
                       duration: 25,
