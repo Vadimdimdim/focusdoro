@@ -4,21 +4,21 @@ import UIfx from 'uifx';
 
 import { Button, Tooltip } from 'antd';
 import { ForwardFilled } from '@ant-design/icons'
-import '../../stylesheets/pomodoro.css';
+import '../../../stylesheets/pomodoro.css';
 
-import Settings from './Sections/Settings';
-import Tasks from './Sections/Tasks'
+import Settings from './Settings';
+import Tasks from './Tasks'
 
-import demonstrative from "../../sounds/demonstrative.ogg";
-import eventually from "../../sounds/eventually.ogg";
-import goesWithoutSaying from "../../sounds/goes-without-saying.ogg";
-import gotItDone from "../../sounds/got-it-done.mp3";
-import juntos from "../../sounds/juntos.ogg";
-import longChimeSound from "../../sounds/long-chime-sound.ogg";
-import pieceOfCake from "../../sounds/piece-of-cake.ogg";
-import pristine from "../../sounds/pristine.ogg";
-import slowSpringBoard from "../../sounds/slow-spring-board.ogg";
-import softBells from "../../sounds/soft-bells.ogg";
+import demonstrative from "../../../sounds/demonstrative.ogg";
+import eventually from "../../../sounds/eventually.ogg";
+import goesWithoutSaying from "../../../sounds/goes-without-saying.ogg";
+import gotItDone from "../../../sounds/got-it-done.mp3";
+import juntos from "../../../sounds/juntos.ogg";
+import longChimeSound from "../../../sounds/long-chime-sound.ogg";
+import pieceOfCake from "../../../sounds/piece-of-cake.ogg";
+import pristine from "../../../sounds/pristine.ogg";
+import slowSpringBoard from "../../../sounds/slow-spring-board.ogg";
+import softBells from "../../../sounds/soft-bells.ogg";
 
 function Pomodoro() {
     const [SettingsId, setSettingsId] = useState("")
@@ -94,14 +94,14 @@ function Pomodoro() {
                             playSound(AlarmSound, AlarmVolume)
                         }
                         setFinishedPomodoro(!FinishedPomodoro)
-                        StartBreak()
+                        startBreak()
                     }
                     else {
                         if(AlarmPlay){
                             playSound(AlarmSound, AlarmVolume)
                         }
                         setFinishedPomodoro(!FinishedPomodoro)
-                        CheckAutoPomodoro()
+                        checkAutoPomodoro()
                     }
                 }
             }, 1000);
@@ -111,7 +111,7 @@ function Pomodoro() {
         return () => clearInterval(interval);
     }, [IsOn, Minutes, Seconds, IsBreak, IsPomodoro])
 
-    const StartPomodoro = () => {
+    const startPomodoro = () => {
         setIsOn(true)
         setIsPomodoro(true)
         setIsBreak(false)
@@ -119,9 +119,9 @@ function Pomodoro() {
         setSeconds(0)
     }
 
-    const CheckAutoPomodoro = () => {
+    const checkAutoPomodoro = () => {
         if (AutoPomodoro) {
-            StartPomodoro()
+            startPomodoro()
         } else {
             setIsOn(false)
             setIsPomodoro(true)
@@ -131,7 +131,7 @@ function Pomodoro() {
         }
     }
 
-    const StartBreak = () => {
+    const startBreak = () => {
         if (AutoBreak) {
             setIsAutoStop(false)
             setIsOn(true)
@@ -156,25 +156,25 @@ function Pomodoro() {
         }
     }
 
-    const StopPomodoro = () => {
+    const stopPomodoro = () => {
         setIsOn(false)
     }
 
-    const ResumePomodoro = () => {
+    const resumePomodoro = () => {
         setIsOn(true)
     }
 
-    const ResetPomodoro = () => {
-        StartPomodoro()
+    const resetPomodoro = () => {
+        startPomodoro()
     }
 
-    const SkipPomodoro = () => {
+    const skipPomodoro = () => {
         if (!IsBreak) {
-            StartBreak()
+            startBreak()
         } else {
             setCounter(Counter => Counter + 1)
             setFinishedPomodoro(!FinishedPomodoro)
-            CheckAutoPomodoro()
+            checkAutoPomodoro()
         }
     }
 
@@ -256,7 +256,7 @@ function Pomodoro() {
                             :
                             <p>Pomodoro #{Counter}
                                 <Tooltip placement="top" title="Skip Pomodoro">
-                                    <ForwardFilled style={{ fontSize: '2rem', color: '#6969f5' }} onClick={SkipPomodoro} />
+                                    <ForwardFilled style={{ fontSize: '2rem', color: '#6969f5' }} onClick={skipPomodoro} />
                                 </Tooltip>
                             </p>
                         :
@@ -266,13 +266,13 @@ function Pomodoro() {
                             IsLongBreak ?
                                 <p>On Long Break
                                         <Tooltip placement="top" title="Skip Long Break">
-                                        <ForwardFilled style={{ fontSize: '2rem', color: '#6969f5' }} onClick={SkipPomodoro} />
+                                        <ForwardFilled style={{ fontSize: '2rem', color: '#6969f5' }} onClick={skipPomodoro} />
                                     </Tooltip>
                                 </p>
                                 :
                                 <p>On Short Break
                                         <Tooltip placement="top" title="Skip Short Break">
-                                        <ForwardFilled style={{ fontSize: '2rem', color: '#6969f5' }} onClick={SkipPomodoro} />
+                                        <ForwardFilled style={{ fontSize: '2rem', color: '#6969f5' }} onClick={skipPomodoro} />
                                     </Tooltip>
                                 </p>
                     }
@@ -282,12 +282,12 @@ function Pomodoro() {
                 </div>
                 <br />
                 <div>
-                    {!IsOn && !IsBreak && !IsPomodoro ? <Button onClick={StartPomodoro}>Start</Button> : null}
-                    {IsOn ? <Button onClick={StopPomodoro}>Stop</Button> : null}
-                    {!IsOn && (IsBreak || IsPomodoro) && !IsAutoStop ? <Button onClick={ResumePomodoro}>Resume</Button> : null}
-                    {!IsOn && IsPomodoro && IsAutoStop ? <Button onClick={ResumePomodoro}>Start Pomodoro #{Counter}</Button> : null}
-                    {!IsOn && IsBreak && IsAutoStop ? <Button onClick={ResumePomodoro}>Start Break</Button> : null}
-                    {!IsOn && !IsBreak && IsPomodoro ? <Button style={{ marginLeft: '1rem' }} onClick={ResetPomodoro}>Reset</Button> : null}
+                    {!IsOn && !IsBreak && !IsPomodoro ? <Button onClick={startPomodoro}>Start</Button> : null}
+                    {IsOn ? <Button onClick={stopPomodoro}>Stop</Button> : null}
+                    {!IsOn && (IsBreak || IsPomodoro) && !IsAutoStop ? <Button onClick={resumePomodoro}>Resume</Button> : null}
+                    {!IsOn && IsPomodoro && IsAutoStop ? <Button onClick={resumePomodoro}>Start Pomodoro #{Counter}</Button> : null}
+                    {!IsOn && IsBreak && IsAutoStop ? <Button onClick={resumePomodoro}>Start Break</Button> : null}
+                    {!IsOn && !IsBreak && IsPomodoro ? <Button style={{ marginLeft: '1rem' }} onClick={resetPomodoro}>Reset</Button> : null}
                 </div>
             </div>
             <Tasks FinishedPomodoro={FinishedPomodoro} />

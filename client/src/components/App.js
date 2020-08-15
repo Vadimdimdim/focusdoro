@@ -4,9 +4,9 @@ import {
   Route
 } from "react-router-dom";
 import Auth from "../hoc/auth";
-import HomePage from "./views/HomePage/Pomodoro.js";
-import LoginPage from "./views/LoginPage/LoginPage.js";
-import RegisterPage from "./views/RegisterPage/RegisterPage.js";
+import HomePage from "./views/HomePage/HomePage";
+import LoginPage from "./views/LoginPage/LoginPage";
+import RegisterPage from "./views/RegisterPage/RegisterPage";
 import NavBar from "./views/NavBar/NavBar";
 import Footer from "./views/Footer/Footer";
 

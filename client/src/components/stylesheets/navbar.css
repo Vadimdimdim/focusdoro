@@ -104,10 +104,8 @@
 
 .ant-menu-horizontal > .ant-menu-item a:hover{
   text-decoration: none;
-  color: #ffcffd !important;
-  border-color: #ffcffd !important;
 }
-
+/* 
 .ant-menu-item-selected{
   color: #ffcffd !important;
   border-color: #ffcffd !important;
@@ -147,4 +145,4 @@
 
 .ant-menu-item a:hover{
   color: #ffcffd
-}
+} */

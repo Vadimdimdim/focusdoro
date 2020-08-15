@@ -5,17 +5,6 @@ import { SettingTwoTone } from '@ant-design/icons';
 
 import '../../../stylesheets/settings.css';
 
-import demonstrative from "../../../sounds/demonstrative.ogg";
-import eventually from "../../../sounds/eventually.ogg";
-import goesWithoutSaying from "../../../sounds/goes-without-saying.ogg";
-import gotItDone from "../../../sounds/got-it-done.mp3";
-import juntos from "../../../sounds/juntos.ogg";
-import longChimeSound from "../../../sounds/long-chime-sound.ogg";
-import pieceOfCake from "../../../sounds/piece-of-cake.ogg";
-import pristine from "../../../sounds/pristine.ogg";
-import slowSpringBoard from "../../../sounds/slow-spring-board.ogg";
-import softBells from "../../../sounds/soft-bells.ogg";
-
 const { Option } = Select;
 
 function Settings(props) {
@@ -148,14 +137,14 @@ function Settings(props) {
             <div className='setting-container'>
                 <label htmlFor='pomodoro-duration'>Pomodoro duration </label>
                 <div className='number-input'>
-                    <InputNumber min={0} max={100} defaultValue={props.Duration} onChange={onChangeDuration} />
+                    <InputNumber min={1} max={100} defaultValue={props.Duration} onChange={onChangeDuration} />
                     <span> in minutes</span>
                 </div>
             </div>
             <div className='setting-container'>
                 <label htmlFor='pomodoro-duration'>Short break duration </label>
                 <div className='number-input'>
-                    <InputNumber min={0} max={100} defaultValue={props.ShortBreak} onChange={onChangeShortBreak} />
+                    <InputNumber min={1} max={100} defaultValue={props.ShortBreak} onChange={onChangeShortBreak} />
                     <span> in minutes</span>
                 </div>
             </div>
@@ -241,7 +230,6 @@ function Settings(props) {
                 :
                 null
             }
-
         </div>
 
     return (
