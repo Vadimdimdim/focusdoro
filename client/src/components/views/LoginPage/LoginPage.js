@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { withRouter } from "react-router-dom";
-import { loginUser } from "../../../actions/user_actions";
+import { loginUser } from "../../../_actions/user_actions";
 import * as Yup from 'yup';
 import { useDispatch } from "react-redux";
 

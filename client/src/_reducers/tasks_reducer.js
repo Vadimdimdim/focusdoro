@@ -2,7 +2,7 @@ import {
     SAVE_TASKS, 
     GET_TASKS,
     UPDATE_TASKS
-} from "../actions/types";
+} from "../_actions/types";
 
 export default function(state={}, action){
     switch(action.type){

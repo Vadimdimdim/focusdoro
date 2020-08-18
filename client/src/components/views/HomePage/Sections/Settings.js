@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useDispatch } from "react-redux";
-import { updateSettings } from "../../../../actions/settings_actions";
+import { updateSettings } from "../../../../_actions/settings_actions";
 
 import { Modal, Switch, Button, InputNumber, Row, Col, message, Slider, Select } from 'antd';
 import { SettingTwoTone } from '@ant-design/icons';

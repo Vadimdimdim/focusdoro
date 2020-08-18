@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import UIfx from 'uifx';
 import { useDispatch } from "react-redux";
-import { getSettings } from "../../../../actions/settings_actions";
+import { getSettings } from "../../../../_actions/settings_actions";
 
 import { Button, Tooltip } from 'antd';
 import { ForwardFilled } from '@ant-design/icons'
@@ -95,14 +95,14 @@ function Pomodoro() {
                         if (AlarmPlay) {
                             playSound(AlarmSound, AlarmVolume)
                         }
-                        setFinishedPomodoro(!FinishedPomodoro)
+                        setFinishedPomodoro(FinishedPomodoro => !FinishedPomodoro)
                         startBreak()
                     }
                     else {
                         if (AlarmPlay) {
                             playSound(AlarmSound, AlarmVolume)
                         }
-                        setFinishedPomodoro(!FinishedPomodoro)
+                        setFinishedPomodoro(FinishedPomodoro => !FinishedPomodoro)
                         checkAutoPomodoro()
                     }
                 }

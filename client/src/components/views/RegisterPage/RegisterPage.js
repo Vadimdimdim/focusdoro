@@ -1,9 +1,9 @@
 import React, { useState } from "react";
 import moment from "moment";
 import * as Yup from 'yup';
-import { registerUser } from "../../../actions/user_actions";
-import { saveSettings } from "../../../actions/settings_actions";
-import { saveTasks } from "../../../actions/tasks_actions";
+import { registerUser } from "../../../_actions/user_actions";
+import { saveSettings } from "../../../_actions/settings_actions";
+import { saveTasks } from "../../../_actions/tasks_actions";
 import { useDispatch } from "react-redux";
 
 import { Form, Input, Button, Typography } from 'antd';

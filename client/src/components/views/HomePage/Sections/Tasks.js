@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { useDispatch } from "react-redux";
-import { getTasks } from "../../../../actions/tasks_actions";
-import { updateTasks } from "../../../../actions/tasks_actions";
+import { getTasks } from "../../../../_actions/tasks_actions";
+import { updateTasks } from "../../../../_actions/tasks_actions";
 
 import { Form, Input, Select, Divider, Row, Col, Popover, Tooltip } from 'antd'
 import { PlusOutlined, MinusOutlined, EditFilled, MoreOutlined, DeleteFilled, CheckOutlined, RedoOutlined } from '@ant-design/icons'
@@ -67,10 +67,10 @@ function Tasks(props) {
     const handleFinish = () => {
         if (props.FinishedPomodoro && Pomodoros[0] !== undefined) {
             if (Pomodoros[0] <= 1) {
-                handleFinishedTask(0)
-                deleteTask(0)
+                onFinishedTask(0)
+                onDeleteTask(0)
             } else {
-                handleRemovePomodoros(0)
+                onRemovePomodoros(0)
             }
         }
     }
@@ -85,7 +85,7 @@ function Tasks(props) {
         setCategory('')
     }
 
-    const deleteTask = (event) => {
+    const onDeleteTask = (event) => {
         let tasks = [...Tasks];
         let categories = [...Categories];
         let pomodoros = [...Pomodoros];
@@ -115,10 +115,58 @@ function Tasks(props) {
         setCategory('')
     }
 
-    const handleEdit = (event) => {
+    const onEdit = (event) => {
         setEdit(true)
         setEditByIndex(event)
         setEditTask(EditTask => EditTask = Tasks[event])
+    }
+
+    const onAddPomodoros = (event) => {
+        let pomodoros = [...Pomodoros]
+        pomodoros[event] += 1
+        setPomodoros(pomodoros)
+    }
+
+    const onRemovePomodoros = (event) => {
+        let pomodoros = [...Pomodoros]
+        pomodoros[event] -= 1
+
+        if (pomodoros[event] <= 0) {
+            onDeleteTask(event)
+        } else {
+            setPomodoros(pomodoros)
+        }
+    }
+
+    const onFinishedTask = (event) => {
+        let tasks = [...Tasks];
+        let categories = [...Categories]
+        if (tasks[event] !== '') {
+            setFinishedTasks(FinishedTasks => FinishedTasks.concat(tasks[event]))
+            setFinishedCategories(FinishedCategories => FinishedCategories.concat(categories[event]))
+        }
+        onDeleteTask(event)
+    }
+
+    const onDeleteFinisedTask = (event) => {
+        let tasks = [...FinishedTasks];
+        let categories = [...FinishedCategories];
+
+        tasks.splice(event, 1)
+        categories.splice(event, 1)
+        setFinishedTasks(tasks)
+        setFinishedCategories(categories)
+    }
+
+    const onRepeatFinisedTask = (event) => {
+        let tasks = [...FinishedTasks];
+        let categories = [...FinishedCategories];
+
+        setTasks(Tasks => Tasks.concat(tasks[event]))
+        setCategories(Categories => Categories.concat(categories[event]))
+        setPomodoros(Pomodoros => Pomodoros.concat(1))
+
+        onDeleteFinisedTask(event)
     }
 
     const handleTaskChange = (event) => {
@@ -137,54 +185,6 @@ function Tasks(props) {
         setEditCategory(event)
     }
 
-    const handleAddPomodoros = (event) => {
-        let pomodoros = [...Pomodoros]
-        pomodoros[event] += 1
-        setPomodoros(pomodoros)
-    }
-
-    const handleRemovePomodoros = (event) => {
-        let pomodoros = [...Pomodoros]
-        pomodoros[event] -= 1
-
-        if (pomodoros[event] <= 0) {
-            deleteTask(event)
-        } else {
-            setPomodoros(pomodoros)
-        }
-    }
-
-    const handleFinishedTask = (event) => {
-        let tasks = [...Tasks];
-        let categories = [...Categories]
-        if (tasks[event] !== '') {
-            setFinishedTasks(FinishedTasks => FinishedTasks.concat(tasks[event]))
-            setFinishedCategories(FinishedCategories => FinishedCategories.concat(categories[event]))
-        }
-        deleteTask(event)
-    }
-
-    const deleteFinisedTask = (event) => {
-        let tasks = [...FinishedTasks];
-        let categories = [...FinishedCategories];
-
-        tasks.splice(event, 1)
-        categories.splice(event, 1)
-        setFinishedTasks(tasks)
-        setFinishedCategories(categories)
-    }
-
-    const repeatFinisedTask = (event) => {
-        let tasks = [...FinishedTasks];
-        let categories = [...FinishedCategories];
-
-        setTasks(Tasks => Tasks.concat(tasks[event]))
-        setCategories(Categories => Categories.concat(categories[event]))
-        setPomodoros(Pomodoros => Pomodoros.concat(1))
-
-        deleteFinisedTask(event)
-    }
-
     const renderTask = (task, index) =>
         <Row className='task-container' justify="space-around" key={index}>
             <Col className='head' xs={4} sm={4} md={4} lg={4}>
@@ -199,11 +199,11 @@ function Tasks(props) {
                     content={
                         <div>
                             <Tooltip placement="right" title="Add Pomodoro">
-                                <PlusOutlined style={{ fontSize: '1.5rem', marginBottom: '7px' }} onClick={() => handleAddPomodoros(index)} />
+                                <PlusOutlined style={{ fontSize: '1.5rem', marginBottom: '7px' }} onClick={() => onAddPomodoros(index)} />
                             </Tooltip>
                             <br />
                             <Tooltip placement="right" title="Remove Pomodoro">
-                                <MinusOutlined style={{ fontSize: '1.5rem' }} onClick={() => handleRemovePomodoros(index)} />
+                                <MinusOutlined style={{ fontSize: '1.5rem' }} onClick={() => onRemovePomodoros(index)} />
                             </Tooltip>
 
                         </div>
@@ -221,15 +221,15 @@ function Tasks(props) {
                     content={
                         <div>
                             <Tooltip placement="right" title="Delete Task">
-                                <DeleteFilled style={{ fontSize: '1.5rem', marginBottom: '7px' }} onClick={() => deleteTask(index)} />
+                                <DeleteFilled style={{ fontSize: '1.5rem', marginBottom: '7px' }} onClick={() => onDeleteTask(index)} />
                             </Tooltip>
                             <br />
                             <Tooltip placement="right" title="Edit Task">
-                                <EditFilled style={{ fontSize: '1.5rem', marginBottom: '7px' }} onClick={() => handleEdit(index)} />
+                                <EditFilled style={{ fontSize: '1.5rem', marginBottom: '7px' }} onClick={() => onEdit(index)} />
                             </Tooltip>
                             <br />
                             <Tooltip placement="right" title="Done">
-                                <CheckOutlined style={{ fontSize: '1.5rem' }} onClick={() => handleFinishedTask(index)} />
+                                <CheckOutlined style={{ fontSize: '1.5rem' }} onClick={() => onFinishedTask(index)} />
                             </Tooltip>
 
                         </div>
@@ -286,11 +286,11 @@ function Tasks(props) {
                     content={
                         <div>
                             <Tooltip placement="right" title="Delete Task">
-                                <DeleteFilled style={{ fontSize: '1.5rem', marginBottom: '7px' }} onClick={() => deleteFinisedTask(index)} />
+                                <DeleteFilled style={{ fontSize: '1.5rem', marginBottom: '7px' }} onClick={() => onDeleteFinisedTask(index)} />
                             </Tooltip>
                             <br />
                             <Tooltip placement="right" title="Repeat Task">
-                                <RedoOutlined style={{ fontSize: '1.5rem', marginBottom: '7px' }} onClick={() => repeatFinisedTask(index)} />
+                                <RedoOutlined style={{ fontSize: '1.5rem', marginBottom: '7px' }} onClick={() => onRepeatFinisedTask(index)} />
                             </Tooltip>
                         </div>
                     }

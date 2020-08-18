@@ -4,12 +4,12 @@ import {
     GET_SETTINGS,
     UPDATE_SETTINGS
 } from './types';
-import {SETTINGS_SERVER} from '../components/Config.js';
+import { SETTINGS_SERVER } from '../components/Config.js';
 
-export function saveSettings(dataToSubmit){
-    const request = axios.post(`${SETTINGS_SERVER}/saveSettings`,dataToSubmit)
+export function saveSettings(dataToSubmit) {
+    const request = axios.post(`${SETTINGS_SERVER}/saveSettings`, dataToSubmit)
         .then(response => response.data);
-    
+
     return {
         type: SAVE_SETTINGS,
         payload: request

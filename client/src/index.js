@@ -10,7 +10,7 @@ import {createStore, applyMiddleware} from "redux";
 import promiseMiddleware from "redux-promise";
 import ReduxThunk from "redux-thunk"; 
 
-import Reducer from "./reducers";
+import Reducer from "./_reducers";
 
 import 'react-app-polyfill/ie9';
 import 'react-app-polyfill/ie11';
