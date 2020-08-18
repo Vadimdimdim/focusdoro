@@ -23,7 +23,7 @@ app.use(bodyParser.json());
 app.use(cookieParser());
 
 app.use('/api/users', require('./routes/users'));
-app.use('/api/pomodoro', require('./routes/pomodoro'));
+app.use('/api/settings', require('./routes/settings'));
 app.use('/api/tasks', require('./routes/tasks'));
 
 if (process.env.NODE_ENV === "production") {

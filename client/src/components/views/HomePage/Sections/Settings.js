@@ -1,5 +1,7 @@
-import React, { useState, useEffect } from 'react';
-import axios from 'axios'
+import React, { useState } from 'react';
+import { useDispatch } from "react-redux";
+import { updateSettings } from "../../../../actions/settings_actions";
+
 import { Modal, Switch, Button, InputNumber, Row, Col, message, Slider, Select } from 'antd';
 import { SettingTwoTone } from '@ant-design/icons';
 
@@ -8,13 +10,14 @@ import '../../../stylesheets/settings.css';
 const { Option } = Select;
 
 function Settings(props) {
+    const dispatch = useDispatch()
 
     const [Visible, setVisible] = useState(false)
     const [TimerSettings, setSettings] = useState(true)
 
     const handleSave = () => {
         if (props.SettingsId !== "") {
-            let variable = {
+            let variables = {
                 duration: props.Duration,
                 shortBreak: props.ShortBreak,
                 longBreak: props.LongBreak,
@@ -25,14 +28,7 @@ function Settings(props) {
                 alarmPlay: props.AlarmPlay,
                 alarmSound: props.AlarmSound
             }
-            axios.put(`/api/pomodoro/updateSettings/${props.SettingsId}`, variable)
-                .then(response => {
-                    if (response.data.success) {
-                        // console.log('updated settings')
-                    } else {
-                        alert('Failed to get settings')
-                    }
-                })
+            dispatch(updateSettings(variables, props.SettingsId))
             setVisible(false)
             message.info('Settings Saved');
             props.update()

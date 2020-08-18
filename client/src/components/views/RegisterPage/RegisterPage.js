@@ -1,16 +1,17 @@
-import React from "react";
+import React, { useState } from "react";
 import moment from "moment";
 import * as Yup from 'yup';
 import { registerUser } from "../../../actions/user_actions";
+import { saveSettings } from "../../../actions/settings_actions";
+import { saveTasks } from "../../../actions/tasks_actions";
 import { useDispatch } from "react-redux";
-import axios from 'axios'
 
 import { Form, Input, Button, Typography } from 'antd';
 import { Formik } from 'formik';
 
 import '../../stylesheets/register.css'
 
-const {Title} = Typography;
+const { Title } = Typography;
 
 const formItemLayout = {
   labelCol: {
@@ -36,7 +37,10 @@ const tailFormItemLayout = {
 };
 
 function RegisterPage(props) {
+  const [formErrorMessage, setFormErrorMessage] = useState('')
+
   const dispatch = useDispatch();
+
   return (
     <Formik
       initialValues={{
@@ -71,58 +75,29 @@ function RegisterPage(props) {
           };
 
           dispatch(registerUser(dataToSubmit)).then(response => {
-            // console.log(response);
+            console.log(response);
             // console.log(dataToSubmit);
             if (response.payload.success) {
-              const variables = {
+              let userName = {
                 username: values.username
               }
-
-              axios.post('/api/pomodoro/getDataByUsername', variables)
-                .then(response => {
-                  if (response.data.success) {
-                    // console.log(response.data.user)
-                    const settings = {
-                      user: response.data.user._id,
-                      duration: 25,
-                      shortBreak: 5,
-                      longBreak: 15,
-                      longBreakDelay: 4,
-                      pomodoroCounter: 1,
-                      autoStartPomodoro: true,
-                      autoStartBreak: true
-                    }
-
-                    const tasks = {
-                      user: response.data.user._id,
-                      tasks: [],
-                      categories: []
-                    }
-
-                    axios.post('/api/pomodoro/saveSettings', settings)
-                      .then(response => {
-                        if (response.data.success) {
-                          // alert('Settings were saved')
-                        } else {
-                          alert('Failed to save settings')
-                        }
-                      })
-                    axios.post('/api/tasks/saveTasks', tasks)
-                      .then(response => {
-                        if (response.data.success) {
-                          // alert('Settings were saved')
-                        } else {
-                          alert('Failed to save settings')
-                        }
-                      })
-                  } else {
-                    alert('Failed to get data by username')
-                  }
-                })
+              dispatch(saveSettings(userName)).then(response => {
+                if (response.payload.success) {
+                  console.log('settings saved')
+                } else {
+                  console.log('settings not saved')
+                }
+              })
+              dispatch(saveTasks(userName)).then(response => {
+                if (response.payload.success) {
+                  console.log('tasks saved')
+                } else {
+                  console.log('tasks not saved')
+                }
+              })
               props.history.push("/login");
             } else {
-              alert(response.payload.err.errmsg)
-              console.log(response.payload.err)
+              setFormErrorMessage('This Username or Email is already being used')
             }
           })
 
@@ -222,6 +197,10 @@ function RegisterPage(props) {
                   <li>Does not match or significantly contain your username</li>
                 </ul>
               </div>
+
+              {formErrorMessage && (
+                <label style={{width:'100%' }}><p style={{ color: '#ff0000bf', fontSize: '0.7rem', border: '1px solid', padding: '1rem', borderRadius: '10px'}}>{formErrorMessage}</p></label>
+              )}
 
               <Form.Item {...tailFormItemLayout}>
                 <Button onClick={handleSubmit} type="primary" disabled={isSubmitting}>

@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from 'react'
-import axios from 'axios'
+import { useDispatch } from "react-redux";
+import { getTasks } from "../../../../actions/tasks_actions";
+import { updateTasks } from "../../../../actions/tasks_actions";
 
 import { Form, Input, Select, Divider, Row, Col, Popover, Tooltip } from 'antd'
 import { PlusOutlined, MinusOutlined, EditFilled, MoreOutlined, DeleteFilled, CheckOutlined, RedoOutlined } from '@ant-design/icons'
@@ -8,7 +10,9 @@ import '../../../stylesheets/tasks.css'
 const { Option } = Select;
 
 function Tasks(props) {
+    const dispatch = useDispatch();
 
+    const [TasksId, setTasksId] = useState("")
     const [Task, setTask] = useState("")
     const [Category, setCategory] = useState("")
     const [EditTask, setEditTask] = useState("")
@@ -21,28 +25,33 @@ function Tasks(props) {
     const [Edit, setEdit] = useState(false)
     const [EditByIndex, setEditByIndex] = useState(null)
 
-    const [TasksId, setTaskssId] = useState("")
-
     useEffect(() => {
-        let variable = { user: localStorage.getItem("userId") }
-
-        axios.post('/api/tasks/getTasks', variable)
-            .then(response => {
-                if (response.data.success) {
-                    // console.log(response.data.tasks);
-                    setTaskssId(response.data.tasks._id)
-                    setTasks(response.data.tasks.tasks)
-                    setCategories(response.data.tasks.categories)
-                    setPomodoros(response.data.tasks.pomodoros)
-                    setFinishedTasks(response.data.tasks.finishedTasks)
-                    setFinishedCategories(response.data.tasks.finishedCategories)
-                } else {
-                    // alert('Failed to get Tasks')
-                }
-            })
+        handleGetTasks()
     }, [])
 
     useEffect(() => {
+        handleUpdateTasks()
+    }, [Tasks, Categories, TasksId, Pomodoros, FinishedTasks, FinishedCategories])
+
+    useEffect(() => {
+        handleFinish()
+    }, [props.FinishedPomodoro])
+
+    const handleGetTasks = () => {
+        let variable = { user: localStorage.getItem("userId") }
+        dispatch(getTasks(variable)).then(response => {
+            if (response.payload.success && response.payload.tasks) {
+                setTasksId(response.payload.tasks._id)
+                setTasks(response.payload.tasks.tasks)
+                setCategories(response.payload.tasks.categories)
+                setPomodoros(response.payload.tasks.pomodoros)
+                setFinishedTasks(response.payload.tasks.finishedTasks)
+                setFinishedCategories(response.payload.tasks.finishedCategories)
+            }
+        })
+    }
+
+    const handleUpdateTasks = () => {
         if (TasksId !== "") {
             let variable = {
                 tasks: Tasks,
@@ -51,30 +60,20 @@ function Tasks(props) {
                 finishedTasks: FinishedTasks,
                 finishedCategories: FinishedCategories
             }
-            axios.put(`/api/tasks/updateTasks/${TasksId}`, variable)
-                .then(response => {
-                    if (response.data.success) {
-                        // console.log('updated tasks')
-                    } else {
-                        // alert('Failed to get tasks')
-                    }
-                })
+            dispatch(updateTasks(variable, TasksId))
         }
-    }, [Tasks, Categories, TasksId, Pomodoros, FinishedTasks, FinishedCategories])
+    }
 
-    useEffect(() => {
-
+    const handleFinish = () => {
         if (props.FinishedPomodoro && Pomodoros[0] !== undefined) {
             if (Pomodoros[0] <= 1) {
                 handleFinishedTask(0)
                 deleteTask(0)
-                console.log('delete')
             } else {
                 handleRemovePomodoros(0)
-                console.log('-1')
             }
         }
-    }, [props.FinishedPomodoro])
+    }
 
     const onAddTask = () => {
         if (Task !== '') {

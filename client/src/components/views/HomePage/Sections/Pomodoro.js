@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import axios from 'axios';
 import UIfx from 'uifx';
+import { useDispatch } from "react-redux";
+import { getSettings } from "../../../../actions/settings_actions";
 
 import { Button, Tooltip } from 'antd';
 import { ForwardFilled } from '@ant-design/icons'
@@ -21,6 +22,8 @@ import slowSpringBoard from "../../../sounds/slow-spring-board.ogg";
 import softBells from "../../../sounds/soft-bells.ogg";
 
 function Pomodoro() {
+    const dispatch = useDispatch()
+
     const [SettingsId, setSettingsId] = useState("")
     const [Duration, setDuration] = useState(25)
     const [ShortBreak, setShortBreak] = useState(5)
@@ -46,28 +49,27 @@ function Pomodoro() {
     const updateSettings = () => {
         let variable = { user: localStorage.getItem("userId") }
 
-        axios.post('/api/pomodoro/getSettings', variable)
-            .then(response => {
-                if (response.data.success) {
-                    setSettingsId(response.data.settings._id)
-                    setDuration(response.data.settings.duration)
-                    setShortBreak(response.data.settings.shortBreak)
-                    setLongBreak(response.data.settings.longBreak)
-                    setLongBreakDelay(response.data.settings.longBreakDelay)
-                    setAutoPomodoro(response.data.settings.autoStartPomodoro)
-                    setAutoBreak(response.data.settings.autoStartBreak)
-                    setAlarmVolume(response.data.settings.alarmVolume)
-                    setAlarmPlay(response.data.settings.alarmPlay)
-                    setAlarmSound(response.data.settings.alarmSound)
-                    if (!IsOn && !IsShortBreak && !IsLongBreak) {
-                        setMinutes(response.data.settings.duration)
-                    }
-                } else {
-                    if (!IsOn && !IsShortBreak && !IsLongBreak) {
-                        setMinutes(Duration)
-                    }
+        dispatch(getSettings(variable)).then(response => {
+            if (response.payload.success) {
+                setSettingsId(response.payload.settings._id)
+                setDuration(response.payload.settings.duration)
+                setShortBreak(response.payload.settings.shortBreak)
+                setLongBreak(response.payload.settings.longBreak)
+                setLongBreakDelay(response.payload.settings.longBreakDelay)
+                setAutoPomodoro(response.payload.settings.autoStartPomodoro)
+                setAutoBreak(response.payload.settings.autoStartBreak)
+                setAlarmVolume(response.payload.settings.alarmVolume)
+                setAlarmPlay(response.payload.settings.alarmPlay)
+                setAlarmSound(response.payload.settings.alarmSound)
+                if (!IsOn && !IsShortBreak && !IsLongBreak) {
+                    setMinutes(response.payload.settings.duration)
                 }
-            })
+            } else {
+                if (!IsOn && !IsShortBreak && !IsLongBreak) {
+                    setMinutes(Duration)
+                }
+            }
+        })
     }
 
     useEffect(() => {
@@ -90,14 +92,14 @@ function Pomodoro() {
                     if (!IsBreak && IsPomodoro) {
                         // Pomodoro Counter
                         setCounter(Counter => Counter + 1)
-                        if(AlarmPlay){
+                        if (AlarmPlay) {
                             playSound(AlarmSound, AlarmVolume)
                         }
                         setFinishedPomodoro(!FinishedPomodoro)
                         startBreak()
                     }
                     else {
-                        if(AlarmPlay){
+                        if (AlarmPlay) {
                             playSound(AlarmSound, AlarmVolume)
                         }
                         setFinishedPomodoro(!FinishedPomodoro)
