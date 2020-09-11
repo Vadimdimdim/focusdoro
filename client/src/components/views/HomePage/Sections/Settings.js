@@ -16,26 +16,28 @@ function Settings(props) {
     const [TimerSettings, setSettings] = useState(true)
 
     const handleSave = () => {
+        let variables = {
+            duration: props.Duration,
+            shortBreak: props.ShortBreak,
+            longBreak: props.LongBreak,
+            longBreakDelay: props.LongBreakDelay,
+            autoStartPomodoro: props.AutoPomodoro,
+            autoStartBreak: props.AutoBreak,
+            alarmVolume: props.AlarmVolume,
+            alarmPlay: props.AlarmPlay,
+            alarmSound: props.AlarmSound
+        }
         if (props.SettingsId !== "") {
-            let variables = {
-                duration: props.Duration,
-                shortBreak: props.ShortBreak,
-                longBreak: props.LongBreak,
-                longBreakDelay: props.LongBreakDelay,
-                autoStartPomodoro: props.AutoPomodoro,
-                autoStartBreak: props.AutoBreak,
-                alarmVolume: props.AlarmVolume,
-                alarmPlay: props.AlarmPlay,
-                alarmSound: props.AlarmSound
-            }
             dispatch(updateSettings(variables, props.SettingsId))
             setVisible(false)
-            message.info('Settings Saved');
+            message.info('Settings Saved')
             props.update()
         } else {
+            const json = JSON.stringify(variables)
+            localStorage.setItem('Settings', json)
             setVisible(false)
+            message.info('Settings Saved')
             props.update()
-            message.info('Please Log In to save your settings in our database');
         }
     }
 
@@ -48,22 +50,18 @@ function Settings(props) {
     }
 
     const onChangeDuration = (value) => {
-        // console.log('duration', value)
         props.setDuration(value)
     }
 
     const onChangeShortBreak = (value) => {
-        // console.log('short break', value)
         props.setShortBreak(value)
     }
 
     const onChangeLongBreak = (value) => {
-        // console.log('long break', value)
         props.setLongBreak(value)
     }
 
     const onChangeLongBreakDelay = (value) => {
-        // console.log('long break delay', value)
         props.setLongBreakDelay(value)
     }
 

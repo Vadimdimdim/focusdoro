@@ -6,8 +6,6 @@ const express = require("express"),
       cors = require('cors'),
       config = require("./config/key");
 
-
-
 mongoose.connect(config.mongoURI,
     {
         useNewUrlParser: true, useUnifiedTopology: true,

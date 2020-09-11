@@ -18,12 +18,10 @@ function Tasks(props) {
     const [EditTask, setEditTask] = useState("")
     const [EditCategory, setEditCategory] = useState("")
     const [Tasks, setTasks] = useState([])
-    const [Categories, setCategories] = useState([])
-    const [Pomodoros, setPomodoros] = useState([])
     const [FinishedTasks, setFinishedTasks] = useState([])
-    const [FinishedCategories, setFinishedCategories] = useState([])
     const [Edit, setEdit] = useState(false)
     const [EditByIndex, setEditByIndex] = useState(null)
+    
 
     useEffect(() => {
         handleGetTasks()
@@ -31,7 +29,7 @@ function Tasks(props) {
 
     useEffect(() => {
         handleUpdateTasks()
-    }, [Tasks, Categories, TasksId, Pomodoros, FinishedTasks, FinishedCategories])
+    }, [Tasks, FinishedTasks])
 
     useEffect(() => {
         handleFinish()
@@ -43,30 +41,37 @@ function Tasks(props) {
             if (response.payload.success && response.payload.tasks) {
                 setTasksId(response.payload.tasks._id)
                 setTasks(response.payload.tasks.tasks)
-                setCategories(response.payload.tasks.categories)
-                setPomodoros(response.payload.tasks.pomodoros)
                 setFinishedTasks(response.payload.tasks.finishedTasks)
-                setFinishedCategories(response.payload.tasks.finishedCategories)
+            }else{
+                const tasksLS = localStorage.getItem('Tasks')
+                if(tasksLS){
+                    const parsedJSON = JSON.parse(tasksLS)
+                    setTasks(parsedJSON.tasks)
+                    setFinishedTasks(parsedJSON.finishedTasks)
+                }
             }
         })
     }
 
     const handleUpdateTasks = () => {
+        let variables = {
+            tasks: Tasks,
+            finishedTasks: FinishedTasks,
+        }
         if (TasksId !== "") {
-            let variable = {
-                tasks: Tasks,
-                categories: Categories,
-                pomodoros: Pomodoros,
-                finishedTasks: FinishedTasks,
-                finishedCategories: FinishedCategories
+            dispatch(updateTasks(variables, TasksId));
+        }else{
+            if(variables.tasks.length !== 0){
+                const json = JSON.stringify(variables);
+                localStorage.setItem('Tasks', json);
+                console.log('yo')
             }
-            dispatch(updateTasks(variable, TasksId))
         }
     }
 
     const handleFinish = () => {
-        if (props.FinishedPomodoro && Pomodoros[0] !== undefined) {
-            if (Pomodoros[0] <= 1) {
+        if (props.FinishedPomodoro && Tasks[0].pomodoros !== undefined) {
+            if (Tasks[0].pomodoros[0] <= 1) {
                 onFinishedTask(0)
                 onDeleteTask(0)
             } else {
@@ -77,9 +82,12 @@ function Tasks(props) {
 
     const onAddTask = () => {
         if (Task !== '') {
-            setTasks(Tasks => Tasks.concat(Task))
-            setCategories(Categories => Categories.concat(Category))
-            setPomodoros(Pomodoros => Pomodoros.concat(1))
+            let task = {
+                task: Task,
+                category: Category,
+                pomodoros: 1
+            }
+            setTasks(Tasks => Tasks.concat(task))
             setTask('')
         }
         setCategory('')
@@ -87,84 +95,69 @@ function Tasks(props) {
 
     const onDeleteTask = (event) => {
         let tasks = [...Tasks];
-        let categories = [...Categories];
-        let pomodoros = [...Pomodoros];
         if (event !== -1) {
             tasks.splice(event, 1)
-            categories.splice(event, 1)
-            pomodoros.splice(event, 1)
             setTasks(tasks)
-            setCategories(categories)
-            setPomodoros(pomodoros)
         }
-        setTask('')
-        setCategory('')
     }
 
     const onEditTask = (event) => {
         let tasks = [...Tasks];
-        let categories = [...Categories]
-        tasks[event] = EditTask
-        categories[event] = EditCategory
-        if (tasks[event] !== '') {
+        tasks[event].task = EditTask
+        tasks[event].category = EditCategory
+        if (tasks[event].task !== '') {
             setTasks(tasks)
-            setCategories(categories)
         }
         setEdit(false)
-        setTask('')
-        setCategory('')
     }
 
     const onEdit = (event) => {
         setEdit(true)
         setEditByIndex(event)
-        setEditTask(EditTask => EditTask = Tasks[event])
+        setEditTask(EditTask => EditTask = Tasks[event].task)
     }
 
     const onAddPomodoros = (event) => {
-        let pomodoros = [...Pomodoros]
-        pomodoros[event] += 1
-        setPomodoros(pomodoros)
+        let tasks = [...Tasks]
+        tasks[event].pomodoros += 1
+        setTasks(tasks)
     }
 
     const onRemovePomodoros = (event) => {
-        let pomodoros = [...Pomodoros]
-        pomodoros[event] -= 1
+        let tasks = [...Tasks]
+        tasks[event].pomodoros -= 1
 
-        if (pomodoros[event] <= 0) {
+        if (tasks[event].pomodoros <= 0) {
             onDeleteTask(event)
         } else {
-            setPomodoros(pomodoros)
+            setTasks(tasks)
         }
     }
 
     const onFinishedTask = (event) => {
         let tasks = [...Tasks];
-        let categories = [...Categories]
         if (tasks[event] !== '') {
             setFinishedTasks(FinishedTasks => FinishedTasks.concat(tasks[event]))
-            setFinishedCategories(FinishedCategories => FinishedCategories.concat(categories[event]))
         }
         onDeleteTask(event)
     }
 
     const onDeleteFinisedTask = (event) => {
         let tasks = [...FinishedTasks];
-        let categories = [...FinishedCategories];
 
         tasks.splice(event, 1)
-        categories.splice(event, 1)
         setFinishedTasks(tasks)
-        setFinishedCategories(categories)
     }
 
     const onRepeatFinisedTask = (event) => {
-        let tasks = [...FinishedTasks];
-        let categories = [...FinishedCategories];
 
-        setTasks(Tasks => Tasks.concat(tasks[event]))
-        setCategories(Categories => Categories.concat(categories[event]))
-        setPomodoros(Pomodoros => Pomodoros.concat(1))
+        let task = {
+            task: FinishedTasks[event].task,
+            category: FinishedTasks[event].category,
+            pomodoros: 1,
+        }
+
+        setTasks(Tasks => Tasks.concat(task))
 
         onDeleteFinisedTask(event)
     }
@@ -188,10 +181,10 @@ function Tasks(props) {
     const renderTask = (task, index) =>
         <Row className='task-container' justify="space-around" key={index}>
             <Col className='head' xs={4} sm={4} md={4} lg={4}>
-                {Categories[index]}
+                {task.category}
             </Col>
             <Col className='body' xs={16} sm={16} md={16} lg={16}>
-                {task}
+                {task.task}
             </Col>
             <Col className='tail' xs={4} sm={4} md={4} lg={4} style={{ textAlign: 'right' }}>
                 <Popover
@@ -212,7 +205,7 @@ function Tasks(props) {
                 >
                     <div id='task-pomodoros'>
                         <p style={{ textAlign: 'center' }}>
-                            {Pomodoros[index]}
+                            {task.pomodoros}
                         </p>
                     </div>
                 </Popover>
@@ -255,6 +248,7 @@ function Tasks(props) {
                 >
                     <Option value='Work'>Work</Option>
                     <Option value='Study'>Study</Option>
+                    <Option value='Project'>Project</Option>
                     <Option value='Personal'>Personal</Option>
                 </Select>
             </Form.Item>
@@ -275,10 +269,10 @@ function Tasks(props) {
     const renderFinishedTask = (task, index) =>
         <Row className='finished-task-container' justify="space-around" key={index}>
             <Col className='head' xs={4} sm={4} md={4} lg={4}>
-                {FinishedCategories[index]}
+                {task.category}
             </Col>
             <Col className='body' xs={16} sm={16} md={16} lg={16}>
-                {task}
+                {task.task}
             </Col>
             <Col className='tail' xs={4} sm={4} md={4} lg={4} style={{ textAlign: 'right' }}>
                 <Popover

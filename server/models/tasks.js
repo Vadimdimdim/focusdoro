@@ -5,11 +5,30 @@ const tasksSchema = mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: 'user'
     },
-    tasks: [{}],
-    categories: [{}],
-    pomodoros: [{}],
-    finishedTasks: [{}],
-    finishedCategories: [{}]
+    tasks: [{
+        task: {
+            type: String,
+            default: ""
+        },
+        category: {
+            type: String,
+            default: ""
+        },
+        pomodoros: {
+            type: String,
+            default: ""
+        }
+    }],
+    finishedTasks: [{
+        task: {
+            type: String,
+            default: ""
+        },
+        category: {
+            type: String,
+            default: ""
+        }
+    }]
 });
 
 const Tasks = mongoose.model("tasks", tasksSchema);

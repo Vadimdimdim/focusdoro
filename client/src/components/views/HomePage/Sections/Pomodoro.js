@@ -65,8 +65,19 @@ function Pomodoro() {
                     setMinutes(response.payload.settings.duration)
                 }
             } else {
+                const settings = localStorage.getItem("Settings");
+                const parsedJSON = JSON.parse(settings)
+                setDuration(parsedJSON.duration)
+                setShortBreak(parsedJSON.shortBreak)
+                setLongBreak(parsedJSON.longBreak)
+                setLongBreakDelay(parsedJSON.longBreakDelay)
+                setAutoPomodoro(parsedJSON.autoStartPomodoro)
+                setAutoBreak(parsedJSON.autoStartBreak)
+                setAlarmVolume(parsedJSON.alarmVolume)
+                setAlarmPlay(parsedJSON.alarmPlay)
+                setAlarmSound(parsedJSON.alarmSound)
                 if (!IsOn && !IsShortBreak && !IsLongBreak) {
-                    setMinutes(Duration)
+                    setMinutes(parsedJSON.duration)
                 }
             }
         })

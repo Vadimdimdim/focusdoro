@@ -81,20 +81,8 @@ function RegisterPage(props) {
               let userName = {
                 username: values.username
               }
-              dispatch(saveSettings(userName)).then(response => {
-                if (response.payload.success) {
-                  console.log('settings saved')
-                } else {
-                  console.log('settings not saved')
-                }
-              })
-              dispatch(saveTasks(userName)).then(response => {
-                if (response.payload.success) {
-                  console.log('tasks saved')
-                } else {
-                  console.log('tasks not saved')
-                }
-              })
+              dispatch(saveSettings(userName))
+              dispatch(saveTasks(userName))
               props.history.push("/login");
             } else {
               setFormErrorMessage('This Username or Email is already being used')
